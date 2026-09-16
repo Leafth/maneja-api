@@ -30,7 +30,6 @@ services:
       - "3000:3000"
 
     environment:
-      RAILS_ENV: development
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
