@@ -29,7 +29,7 @@ module ManejaApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.i18n.default_locale = :en
+    config.i18n.default_locale = :"pt-BR"
     config.i18n.available_locales = [ :"pt-BR", :en ]
 
     config.log_tags = [ :request_id ]
