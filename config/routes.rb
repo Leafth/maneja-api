@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :users, skip: :all
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
     namespace :v1 do
+      post "password/forgot", to: "passwords#forgot"
+
       namespace :auth do
         post "register", to: "registrations#create"
         post "login", to: "sessions#create"
