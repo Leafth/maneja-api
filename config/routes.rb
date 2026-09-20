@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       namespace :auth do
         post "login", to: "sessions#create"
         post "refresh", to: "tokens#create"
+
+        get "me", to: "sessions#show"
       end
 
       get "health", to: "health#show"
