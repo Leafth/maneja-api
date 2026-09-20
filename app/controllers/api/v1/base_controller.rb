@@ -8,24 +8,21 @@ module Api
       rescue_from AuthenticationError, with: :render_authentication_error
       rescue_from AuthorizationError, with: :render_authorization_error
 
-      attr_reader :current_user
+      attr_reader :current_user, :current_session
 
       private
 
       def authenticate_request!
         payload = ::Auth::AccessToken.decode(bearer_token)
 
-        @current_user = User.find_by(id: payload[:sub])
-        @current_session_id = payload[:sid]
+        @current_user = User.find(payload[:sub])
+        @current_session = Session.active.find_by(id: payload[:sid], user: current_user)
 
-        raise AuthenticationError, I18n.t("errors.authentication.invalid_token") if current_session_id.blank?
-
+        unless current_session
+          raise AuthenticationError, I18n.t("errors.authentication.invalid_token")
+        end
       rescue ActiveRecord::RecordNotFound
         raise AuthenticationError, I18n.t("errors.authentication.invalid_token")
-      end
-
-      def current_session_id
-        @current_session_id
       end
 
       def bearer_token
