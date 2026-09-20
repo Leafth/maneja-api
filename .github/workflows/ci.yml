@@ -70,6 +70,7 @@ jobs:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
+      MAILER_FROM: no-reply@maneja.test
 
     steps:
       - name: Install packages
