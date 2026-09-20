@@ -1,2 +1,6 @@
 pt-BR:
-  hello: "Olá mundo"
+  errors:
+    authentication:
+      invalid_token: "Token de autenticação inválido."
+      expired_token: "Token de autenticação expirado."
+      invalid_refresh_token: "Token de renovação inválido ou expirado."
