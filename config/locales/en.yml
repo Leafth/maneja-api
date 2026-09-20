@@ -1,2 +1,7 @@
 en:
-  hello: "Hello world"
+  errors:
+    authentication:
+      missing_token: "Missing authentication token."
+      invalid_token: "Invalid authentication token."
+      expired_token: "Authentication token has expired."
+      invalid_refresh_token: "Invalid or expired refresh token."

@@ -1,2 +1,19 @@
 pt-BR:
-  hello: "Olá mundo"
+  errors:
+    authentication:
+      missing_token: "Token de autenticação ausente."
+      invalid_token: "Token de autenticação inválido."
+      expired_token: "Token de autenticação expirado."
+      invalid_refresh_token: "Token de renovação inválido ou expirado."
+  activerecord:
+    errors:
+      messages:
+        blank: "não pode ficar em branco"
+        required: "é obrigatório"
+        taken: "já está em uso"
+    attributes:
+      user:
+        name: "Nome"
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação da Senha"

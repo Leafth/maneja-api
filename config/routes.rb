@@ -3,6 +3,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      namespace :auth do
+        post "register", to: "registrations#create"
+        post "login", to: "sessions#create"
+        post "refresh", to: "tokens#create"
+        get "me", to: "sessions#show"
+        delete "logout", to: "sessions#destroy"
+      end
+
       get "health", to: "health#show"
     end
   end
