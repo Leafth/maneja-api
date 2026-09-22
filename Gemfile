@@ -35,7 +35,7 @@ gem "devise"
 
 gem "jwt"
 
-gem "json", "2.21.2"
+gem "json", "3.0.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
