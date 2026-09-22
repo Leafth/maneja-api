@@ -47,14 +47,14 @@ RSpec.describe User, type: :model do
       expect(user).to_not be_valid
       expect(user.errors[:password_confirmation]).to be_present
     end
+  end
 
-    describe 'associations' do
-      it "destroy associated sessions when the user is destroyed" do
-        user = create(:user)
-        session = create(:session, user: user)
-        user.destroy!
-        expect(Session.find_by(id: session.id)).to be_nil
-      end
+  describe 'associations' do
+    it "destroy associated sessions when the user is destroyed" do
+      user = create(:user)
+      session = create(:session, user: user)
+      user.destroy!
+      expect(Session.find_by(id: session.id)).to be_nil
     end
   end
 end
