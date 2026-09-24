@@ -7,6 +7,12 @@ module Api
         head :no_content
       end
 
+      def verify
+        reset_token = ::Auth::VerifyPasswordResetCode.call(code: params.expect(:code))
+
+        render json: { reset_token: }, status: :ok
+      end
+
       def reset
         code, password, password_confirmation = reset_password_params
 

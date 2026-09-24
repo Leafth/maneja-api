@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post "password/forgot", to: "passwords#forgot"
+      post "password/verify", to: "passwords#verify"
       patch "password/reset", to: "passwords#reset"
 
       namespace :auth do
