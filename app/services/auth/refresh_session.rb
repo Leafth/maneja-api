@@ -5,7 +5,7 @@ module Auth
         digest = RefreshToken.digest(refresh_token)
 
         Session.transaction do
-          session = Session.active.lock.find_by!(refresh_token_digest: digest)
+          session = Session.active.lock.find_by(refresh_token_digest: digest)
 
           raise AuthenticationError, I18n.t("errors.authentication.expired_token") unless session
 
