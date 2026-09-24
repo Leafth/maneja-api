@@ -7,4 +7,26 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   validates :name, presence: true
+
+  generates_token_for :password_reset_verification, expires_in: 10.minutes do reset_password_token end
+
+  protected
+
+  def set_reset_password_token
+    raw = nil
+    encoded = nil
+
+    loop do
+      raw = SecureRandom.random_number(1_000_000).to_s.rjust(6, "0")
+      encoded = Devise.token_generator.digest(self.class, :reset_password_token, raw)
+
+      break unless self.class.exists?(reset_password_token: encoded)
+    end
+
+    self.reset_password_token = encoded
+    self.reset_password_sent_at = Time.now.utc
+    save(validate: false)
+
+    raw
+  end
 end

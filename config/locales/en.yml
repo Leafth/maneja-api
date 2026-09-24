@@ -5,3 +5,8 @@ en:
       invalid_token: "Invalid authentication token."
       expired_token: "Authentication token has expired."
       invalid_refresh_token: "Invalid or expired refresh token."
+      invalid_password_reset_code: "Invalid or expired password recovery code."
+      invalid_password_reset_token: "Invalid or expired password reset token."
+    rate_limit:
+      password_reset_forgot: "Rate limit exceeded for password reset request."
+      password_reset_verify: "Rate limit exceeded for password reset verification."

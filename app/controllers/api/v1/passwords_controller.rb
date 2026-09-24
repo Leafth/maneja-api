@@ -1,17 +1,30 @@
 module Api
   module V1
     class PasswordsController < BaseController
+      rate_limit to: 5, within: 10.minutes, only: :forgot, name: "password_reset_forgot", with: :render_forgot_rate_limit
+      rate_limit to: 5, within: 1.minute, only: :verify, name: "password_reset_verify", with: :render_verify_rate_limit
+
       def forgot
         ::Auth::RequestPasswordReset.call(email: params.expect(:email))
 
         head :no_content
       end
+      def render_forgot_rate_limit
+        render json: { errors: { base: [ I18n.t("errors.rate_limit.password_reset_forgot") ] } },
+               status: :too_many_requests
+      end
+
+      def verify
+        reset_token = ::Auth::VerifyPasswordResetCode.call(code: params.expect(:code))
+
+        render json: { reset_token: }, status: :ok
+      end
 
       def reset
-        token, password, password_confirmation = reset_password_params
+        reset_token, password, password_confirmation = reset_password_params
 
         ::Auth::ResetPassword.call(
-          reset_password_token: token,
+          reset_token:,
           password:,
           password_confirmation:
         )
@@ -22,7 +35,17 @@ module Api
       private
 
       def reset_password_params
-        params.expect(:token, :password, :password_confirmation)
+        params.expect(:reset_token, :password, :password_confirmation)
+      end
+
+      def render_verify_rate_limit
+        render json: { errors: { base: [ I18n.t("errors.rate_limit.password_reset_verify") ] } },
+               status: :too_many_requests
+      end
+
+      def render_forgot_rate_limit
+        render json: { errors: { base: [ I18n.t("errors.rate_limit.password_reset_forgot") ] } },
+               status: :too_many_requests
       end
     end
   end
