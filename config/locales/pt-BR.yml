@@ -5,6 +5,7 @@ pt-BR:
       invalid_token: "Token de autenticação inválido."
       expired_token: "Token de autenticação expirado."
       invalid_refresh_token: "Token de renovação inválido ou expirado."
+      invalid_password_reset_code: "Código de recuperação inválido ou expirado."
   activerecord:
     errors:
       messages:
