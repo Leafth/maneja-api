@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
+  generates_token_for :password_reset_verification, expires_in: 10.minutes do reset_password_token end
+
   protected
 
   def set_reset_password_token
