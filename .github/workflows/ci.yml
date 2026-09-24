@@ -70,6 +70,7 @@ jobs:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
+      JWT_SECRET: test-jwt-secret
       MAILER_FROM: no-reply@maneja.test
 
     steps:
