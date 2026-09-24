@@ -10,7 +10,7 @@ class Session < ApplicationRecord
     expires_at < Time.current
   end
 
-  def revoke?
+  def revoked?
     revoked_at.present?
   end
 
@@ -19,6 +19,6 @@ class Session < ApplicationRecord
   end
 
   def active?
-    !expired? && !revoke?
+    !expired? && !revoked?
   end
 end
