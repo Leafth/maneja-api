@@ -14,10 +14,10 @@ module Api
       end
 
       def reset
-        code, password, password_confirmation = reset_password_params
+        reset_token, password, password_confirmation = reset_password_params
 
         ::Auth::ResetPassword.call(
-          reset_password_token: code,
+          reset_token:,
           password:,
           password_confirmation:
         )
@@ -28,7 +28,7 @@ module Api
       private
 
       def reset_password_params
-        params.expect(:code, :password, :password_confirmation)
+        params.expect(:reset_token, :password, :password_confirmation)
       end
     end
   end
