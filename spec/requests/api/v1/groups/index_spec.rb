@@ -8,6 +8,24 @@ RSpec.describe 'GET /api/v1/groups', type: :request do
     { 'Authorization' => "Bearer #{tokens[:access_token]}" }
   end
 
+  it "filters groups" do
+    matching_group = create(:group, name: "North Herd")
+    create(:group, name: "South Herd")
+    get "/api/v1/groups", headers: headers, params: { name: "North" }
+    body = response.parsed_body
+    expect(response).to have_http_status(:ok)
+    expect(body['data'].pluck('id')).to eq([ matching_group.id ])
+  end
+
+  it "sorts groups" do
+    small_group = create(:group, animal_count: 5)
+    large_group = create(:group, animal_count: 20)
+    get "/api/v1/groups", headers: headers, params: { sort: "animal_count", direction: "desc" }
+    body = response.parsed_body
+    expect(response).to have_http_status(:ok)
+    expect(body['data'].pluck('id')).to eq([ large_group.id, small_group.id ])
+  end
+
   it 'returns a paginated list of groups' do
     create_list(:group, 3)
     get "/api/v1/groups", headers: headers, params: { page: 1, per_page: 2 }
