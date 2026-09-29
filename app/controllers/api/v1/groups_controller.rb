@@ -18,6 +18,11 @@ module Api
         render json: group, serializer: GroupSerializer, status: :ok
       end
 
+      def update
+        group = Groups::Update.call(id: params[:id], attributes: group_params)
+        render json: group, serializer: GroupSerializer, status: :ok
+      end
+
       private
 
       def group_params
