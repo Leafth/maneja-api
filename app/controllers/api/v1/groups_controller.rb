@@ -23,6 +23,11 @@ module Api
         render json: group, serializer: GroupSerializer, status: :ok
       end
 
+      def destroy
+        Groups::Delete.call(id: params[:id])
+        head :no_content
+      end
+
       private
 
       def group_params

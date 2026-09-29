@@ -16,7 +16,7 @@ Rails.application.routes.draw do
         get "me", to: "sessions#show"
         delete "logout", to: "sessions#destroy"
       end
-      resources :groups, only: [ :create, :index, :show, :update ]
+      resources :groups, only: [ :create, :index, :show, :update, :destroy ]
 
       get "health", to: "health#show"
     end
