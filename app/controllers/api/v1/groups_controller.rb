@@ -13,6 +13,11 @@ module Api
         render json: PaginatedCollectionSerializer.call(result:, serializer: GroupSerializer)
       end
 
+      def show
+        group = Groups::Find.call(id: params[:id])
+        render json: group, serializer: GroupSerializer, status: :ok
+      end
+
       private
 
       def group_params
