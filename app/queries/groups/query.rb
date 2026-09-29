@@ -16,7 +16,7 @@ module Groups
 
     class << self
       def call(filters: {}, sort: nil, direction: nil)
-        scope = Filtering::Filterer.call(scope: Group.all, filters:, definitions: FILTERS)
+        scope = Filtering::Filterer.call(scope: Group.active, filters:, definitions: FILTERS)
         Sorting::Sorter.call(scope: scope, sort:, direction:, allowed: SORTS, default: DEFAULT_SORT)
       end
     end
