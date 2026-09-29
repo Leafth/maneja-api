@@ -9,7 +9,11 @@ module Api
       end
 
       def index
-        result = Groups::List.call(page: params[:page], per_page: params[:per_page])
+        result = Groups::List.call(
+          filters: params.permit(:name, :min_animal_count, :max_animal_count).to_h,
+          sort: params[:sort],
+          direction: params[:direction],
+          page: params[:page], per_page: params[:per_page])
         render json: PaginatedCollectionSerializer.call(result:, serializer: GroupSerializer)
       end
 

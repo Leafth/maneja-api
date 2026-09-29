@@ -12,7 +12,7 @@ module Groups
       created_at: :created_at
     }.freeze
 
-    DEFAULT_SORT = { created_at: :desc }.freeze
+    DEFAULT_SORT = { updated_at: :desc }.freeze
 
     class << self
       def call(filters: {}, sort: nil, direction: nil)
