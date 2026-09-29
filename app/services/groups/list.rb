@@ -1,9 +1,10 @@
 module Groups
   class List
     class << self
-      def call(page:, per_page:)
+      def call(filters: {}, sort: nil, direction: nil, page:, per_page:)
+        scope = Groups::Query.call(filters:, sort:, direction:)
         Pagination::Paginator.call(
-          scope: Group.active.order(created_at: :desc),
+          scope: scope,
           page:,
           per_page:
         )
