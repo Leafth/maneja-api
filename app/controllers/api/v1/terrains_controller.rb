@@ -22,6 +22,11 @@ module Api
         render json: terrain, serializer: TerrainSerializer, status: :ok
       end
 
+      def update
+        terrain = Terrains::Update.call(id: params[:id], attributes: terrain_params)
+        render json: terrain, serializer: TerrainSerializer, status: :ok
+      end
+
       private
 
       def terrain_params
