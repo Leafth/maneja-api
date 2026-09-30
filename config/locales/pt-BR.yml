@@ -10,15 +10,34 @@ pt-BR:
     rate_limit:
       password_reset_forgot: "Limite de solicitações excedido para solicitação de redefinição de senha."
       password_reset_verify: "Limite de solicitações excedido para verificação de redefinição de senha."
+    resource:
+      not_found: "Recurso não encontrado."
   activerecord:
     errors:
       messages:
         blank: "não pode ficar em branco"
         required: "é obrigatório"
         taken: "já está em uso"
+    models:
+      user:
+        one: "Usuário"
+        other: "Usuários"
+      group:
+        one: "Grupo"
+        other: "Grupos"
+      terrain:
+        one: "Terreno"
+        other: "Terrenos"
     attributes:
       user:
         name: "Nome"
         email: "E-mail"
         password: "Senha"
         password_confirmation: "Confirmação da Senha"
+      group:
+        name: "Nome"
+        animal_count: "Quantidade de Animais"
+      terrain:
+        name: "Nome"
+        rest_days: "Dias de Descanso"
+        status: "Status"
