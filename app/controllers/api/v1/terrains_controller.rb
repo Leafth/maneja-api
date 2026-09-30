@@ -17,6 +17,11 @@ module Api
         render json: PaginatedCollectionSerializer.call(result:, serializer: TerrainSerializer)
       end
 
+      def show
+        terrain = Terrains::Find.call(id: params[:id])
+        render json: terrain, serializer: TerrainSerializer, status: :ok
+      end
+
       private
 
       def terrain_params
