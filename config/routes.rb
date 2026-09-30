@@ -17,7 +17,7 @@ Rails.application.routes.draw do
         delete "logout", to: "sessions#destroy"
       end
       resources :groups, only: [ :create, :index, :show, :update, :destroy ]
-      resources :terrains, only: [ :create ]
+      resources :terrains, only: [ :create, :index ]
 
       get "health", to: "health#show"
     end

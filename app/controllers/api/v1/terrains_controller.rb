@@ -8,6 +8,15 @@ module Api
         render json: terrain, serializer: TerrainSerializer, status: :created
       end
 
+      def index
+        result = Terrains::List.call(
+          filters: params.permit(:name, :status, :min_rest_days, :max_rest_days).to_h,
+          sort: params[:sort],
+          direction: params[:direction],
+          page: params[:page], per_page: params[:per_page])
+        render json: PaginatedCollectionSerializer.call(result:, serializer: TerrainSerializer)
+      end
+
       private
 
       def terrain_params
