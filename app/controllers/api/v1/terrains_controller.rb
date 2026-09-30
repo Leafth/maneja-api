@@ -27,6 +27,11 @@ module Api
         render json: terrain, serializer: TerrainSerializer, status: :ok
       end
 
+      def destroy
+        Terrains::Delete.call(id: params[:id])
+        head :no_content
+      end
+
       private
 
       def terrain_params
