@@ -10,3 +10,29 @@ en:
     rate_limit:
       password_reset_forgot: "Rate limit exceeded for password reset request."
       password_reset_verify: "Rate limit exceeded for password reset verification."
+    resource:
+      not_found: "Resource not found."
+  activerecord:
+    models:
+      user:
+        one: "User"
+        other: "Users"
+      group:
+        one: "Group"
+        other: "Groups"
+      terrain:
+        one: "Terrain"
+        other: "Terrains"
+    attributes:
+      user:
+        name: "Name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password Confirmation"
+      group:
+        name: "Name"
+        animal_count: "Animal Count"
+      terrain:
+        name: "Name"
+        rest_days: "Rest Days"
+        status: "Status"

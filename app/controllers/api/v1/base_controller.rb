@@ -36,7 +36,7 @@ module Api
       def render_not_found(error)
         render json: {
           errors: {
-            resource: [ error.message ]
+            resource: [ I18n.t("errors.resource.not_found") ]
           }
         }, status: :not_found
       end
