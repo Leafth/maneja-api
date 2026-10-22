@@ -37,4 +37,25 @@ class Terrain < ApplicationRecord
   def last_group
     last_occupation&.group
   end
+
+  def remaining_rest_days
+    return 0 unless resting?
+
+    occupation = last_occupation
+    return 0 unless occupation
+
+    elapsed_days = (Date.current - occupation.ended_at.to_date).to_i
+
+    [ rest_days - elapsed_days, 0 ].max
+  end
+
+  def days_free
+    return 0 unless available?
+
+    occupation = last_occupation
+
+    return (Date.current - created_at.to_date).to_i unless occupation
+
+    (Date.current - occupation.ended_at.to_date).to_i
+  end
 end
