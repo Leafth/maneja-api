@@ -1,8 +1,14 @@
 FactoryBot.define do
   factory :occupation do
-    group { nil }
-    terrain { nil }
-    started_at { "2026-10-22 18:11:19" }
-    ended_at { "2026-10-22 18:11:19" }
+    association :group
+    association :terrain
+
+    started_at { 1.days.ago }
+    ended_at { nil }
+
+    trait :finished do
+      started_at { 2.days.ago }
+      ended_at { 1.days.ago }
+    end
   end
 end

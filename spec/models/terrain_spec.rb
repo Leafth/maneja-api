@@ -64,4 +64,39 @@ RSpec.describe Terrain, type: :model do
       expect(terrain.reload.deleted?).to be(true)
     end
   end
+
+  describe '#current_occupation' do
+    it 'returns the active occupation' do
+      terrain = create(:terrain)
+      occupation = create(:occupation, terrain:)
+      expect(terrain.current_occupation).to eq(occupation)
+    end
+  end
+
+  describe '#current_group' do
+    it 'returns the group of the active occupation' do
+      terrain = create(:terrain)
+      group = create(:group)
+      create(:occupation, terrain:, group:)
+      expect(terrain.current_group).to eq(group)
+    end
+  end
+
+  describe '#last_occupation' do
+    it "returns the most recent finished occupation" do
+      terrain = create(:terrain)
+      create(:occupation, terrain:, started_at: 4.days.ago, ended_at: 3.days.ago)
+      latest_occupation = create(:occupation, terrain:, started_at: 2.days.ago, ended_at: 1.day.ago)
+      expect(terrain.last_occupation).to eq(latest_occupation)
+    end
+  end
+
+  describe '#last_group' do
+    it "returns the group of the most recent finished occupation" do
+      terrain = create(:terrain)
+      group = create(:group)
+      create(:occupation, terrain:, group:, started_at: 2.days.ago, ended_at: 1.days.ago)
+      expect(terrain.last_group).to eq(group)
+    end
+  end
 end
