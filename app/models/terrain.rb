@@ -1,4 +1,6 @@
 class Terrain < ApplicationRecord
+  has_many :occupations, dependent: :restrict_with_error
+
   enum :status, {
     available: "available",
     occupied: "occupied",
@@ -18,5 +20,21 @@ class Terrain < ApplicationRecord
 
   def soft_delete!
     update!(deleted_at: Time.current)
+  end
+
+  def current_occupation
+    occupations.active.first
+  end
+
+  def current_group
+    current_occupation&.group
+  end
+
+  def last_occupation
+    occupations.finished.order(ended_at: :desc).first
+  end
+
+  def last_group
+    last_occupation&.group
   end
 end

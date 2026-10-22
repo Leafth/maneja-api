@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_30_115218) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_181113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -22,6 +22,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_115218) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_groups_on_deleted_at"
+  end
+
+  create_table "occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "group_id", null: false
+    t.uuid "terrain_id", null: false
+    t.datetime "started_at", null: false
+    t.datetime "ended_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_occupations_on_active_group", unique: true, where: "(ended_at IS NULL)"
+    t.index ["group_id"], name: "index_occupations_on_group_id"
+    t.index ["terrain_id"], name: "index_occupations_on_active_terrain", unique: true, where: "(ended_at IS NULL)"
+    t.index ["terrain_id"], name: "index_occupations_on_terrain_id"
   end
 
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -58,5 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_115218) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "occupations", "groups"
+  add_foreign_key "occupations", "terrains"
   add_foreign_key "sessions", "users"
 end

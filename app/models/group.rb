@@ -1,4 +1,6 @@
 class Group < ApplicationRecord
+  has_many :occupations, dependent: :restrict_with_error
+
   validates :name, presence: true
   validates :animal_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
@@ -11,5 +13,13 @@ class Group < ApplicationRecord
 
   def soft_delete!
     update!(deleted_at: Time.current)
+  end
+
+  def current_occupation
+    occupations.active.first
+  end
+
+  def current_terrain
+    current_occupation&.terrain
   end
 end
