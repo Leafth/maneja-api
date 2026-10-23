@@ -41,6 +41,7 @@ gem "active_model_serializers", "~> 0.10.16"
 
 gem "sidekiq", "~> 8.0"
 
+gem "sidekiq-cron"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
 
