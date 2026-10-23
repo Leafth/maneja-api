@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
       resources :groups, only: [ :create, :index, :show, :update, :destroy ]
       resources :terrains, only: [ :create, :index, :show, :update, :destroy ]
+      resources :occupations, only: [ :create ]
 
       get "health", to: "health#show"
     end
