@@ -28,7 +28,7 @@ module Api
       end
 
       def destroy
-        Groups::Delete.call(id: params[:id])
+        Groups::Deactivate.call(id: params[:id])
         head :no_content
       end
 

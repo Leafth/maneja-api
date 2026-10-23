@@ -1,0 +1,5 @@
+release_resting_terrains:
+  cron: "0 */12 * * *"
+  class: "Terrains::ReleaseRestingJob"
+  queue: default
+  description: "Libera terrenos que concluíram o período de descanso"

@@ -67,4 +67,21 @@ RSpec.describe Group, type: :model do
       expect(group.reload.deleted?).to be true
     end
   end
+
+  describe '#current_occupation' do
+    it "returns the active occupation" do
+      group = create(:group)
+      occupation = create(:occupation, group:)
+      expect(group.current_occupation).to eq(occupation)
+    end
+  end
+
+  describe '#current_terrain' do
+    it "returns the terrain of the active occupation" do
+      group = create(:group)
+      terrain = create(:terrain)
+      create(:occupation, group:, terrain:)
+      expect(group.current_terrain).to eq(terrain)
+    end
+  end
 end

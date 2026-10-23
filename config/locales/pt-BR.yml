@@ -12,6 +12,11 @@ pt-BR:
       password_reset_verify: "Limite de solicitações excedido para verificação de redefinição de senha."
     resource:
       not_found: "Recurso não encontrado."
+    occupations:
+      inactive_group: "O grupo está inativo."
+      inactive_terrain: "O terreno está inativo."
+      same_terrain: "O grupo já está neste terreno."
+      terrain_occupied: "O terreno está ocupado."
   activerecord:
     errors:
       messages:

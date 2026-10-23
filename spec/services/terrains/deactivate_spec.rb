@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Terrains::Delete, type: :service do
+RSpec.describe Terrains::Deactivate, type: :service do
   describe ".call" do
-    it "soft deletes the terrain" do
+    it "deactivates an available terrain" do
       terrain = create(:terrain)
       result = described_class.call(id: terrain.id)
       expect(result.deleted?).to be true
@@ -12,6 +12,21 @@ RSpec.describe Terrains::Delete, type: :service do
     it "keeps the terrain persisted" do
       terrain = create(:terrain)
       expect { described_class.call(id: terrain.id) }.not_to change(Terrain, :count)
+    end
+
+    it "deactivates a resting terrain" do
+      terrain = create(:terrain, :resting)
+      result = described_class.call(id: terrain.id)
+      expect(result.reload).to be_deleted
+    end
+
+    it "does not deactivate a terrain with an active occupation" do
+      terrain = create(:terrain, :occupied)
+      create(:occupation, terrain:)
+      expect {
+        described_class.call(id: terrain.id)
+      }.to raise_error(Occupations::DeactivationError)
+      expect(terrain.reload).not_to be_deleted
     end
 
     it "removes the terrain from the active scope" do

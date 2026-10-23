@@ -20,6 +20,15 @@ RSpec.describe "DELETE /api/v1/groups/:id", type: :request do
     expect(response).to have_http_status(:not_found)
   end
 
+  it "removes the group from its current terrain" do
+    group = create(:group)
+    terrain = create(:terrain, :occupied)
+    occupation = create(:occupation, group:, terrain:)
+    delete "/api/v1/groups/#{group.id}", headers: headers
+    expect(response).to have_http_status(:no_content)
+    expect(occupation.reload).to be_finished
+  end
+
   it "returns unauthorized when no token is provided" do
     group = create(:group)
     delete "/api/v1/groups/#{group.id}"
