@@ -58,4 +58,12 @@ class Terrain < ApplicationRecord
 
     (Date.current - occupation.ended_at.to_date).to_i
   end
+
+  def rest_completed?
+    return false unless resting?
+
+    occupation = last_occupation
+    return false unless occupation
+    occupation.ended_at.to_date + rest_days <= Date.current
+  end
 end
