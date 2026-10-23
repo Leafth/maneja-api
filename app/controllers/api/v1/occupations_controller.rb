@@ -19,6 +19,13 @@ module Api
         render json: PaginatedCollectionSerializer.call(result:, serializer: OccupationSerializer)
       end
 
+      def by_terrain
+        terrain = Terrains::Find.call(id: params[:id])
+        result = Occupations::HistoryByTerrain.call(terrain:, page: params[:page], per_page: params[:per_page])
+
+        render json: PaginatedCollectionSerializer.call(result:, serializer: OccupationSerializer)
+      end
+
       private
 
       def occupation_params

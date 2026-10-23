@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "GET /api/v1/groups/:group_id/occupations", type: :request do
+RSpec.describe "GET /api/v1/groups/:id/occupations", type: :request do
   let (:user) { create(:user) }
   let (:tokens) { Auth::CreateSession.call(user:) }
 

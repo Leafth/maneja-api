@@ -2,7 +2,7 @@ module Occupations
   class HistoryByGroup
     class << self
       def call(group:, page:, per_page:)
-        scope = group.occupations.order(started_at: :desc)
+        scope = group.occupations.includes(:group, :terrain).order(started_at: :desc)
 
         Pagination::Paginator.call(scope:, page:, per_page:)
       end

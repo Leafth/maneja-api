@@ -21,7 +21,10 @@ Rails.application.routes.draw do
         get :occupations, to: "occupations#by_group", on: :member
       end
 
-      resources :terrains, only: [ :create, :index, :show, :update, :destroy ]
+      resources :terrains, only: [ :create, :index, :show, :update, :destroy ] do
+        get :occupations, to: "occupations#by_terrain", on: :member
+      end
+
       resources :occupations, only: [ :create ]
 
       get "health", to: "health#show"
