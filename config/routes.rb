@@ -16,7 +16,11 @@ Rails.application.routes.draw do
         get "me", to: "sessions#show"
         delete "logout", to: "sessions#destroy"
       end
-      resources :groups, only: [ :create, :index, :show, :update, :destroy ]
+
+      resources :groups, only: [ :create, :index, :show, :update, :destroy ] do
+        get :occupations, to: "occupations#by_group", on: :member
+      end
+
       resources :terrains, only: [ :create, :index, :show, :update, :destroy ]
       resources :occupations, only: [ :create ]
 

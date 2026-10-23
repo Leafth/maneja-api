@@ -12,6 +12,13 @@ module Api
         render json: occupation, serializer: OccupationSerializer, status: :created
       end
 
+      def by_group
+        group = Groups::Find.call(id: params[:id])
+        result = Occupations::HistoryByGroup.call(group:, page: params[:page], per_page: params[:per_page])
+
+        render json: PaginatedCollectionSerializer.call(result:, serializer: OccupationSerializer)
+      end
+
       private
 
       def occupation_params
