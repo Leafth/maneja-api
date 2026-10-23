@@ -23,10 +23,16 @@ RSpec.describe "POST /api/v1/occupations", type: :request do
     expect(response).to have_http_status(:created)
     expect(body).to include(
       "id" => be_present,
-      "group_id" => group.id,
-      "terrain_id" => terrain.id,
       "started_at" => be_present,
       "ended_at" => nil
+    )
+    expect(body["group"]).to include(
+      "id" => group.id,
+      "name" => group.name
+    )
+    expect(body["terrain"]).to include(
+      "id" => terrain.id,
+      "name" => terrain.name
     )
   end
 

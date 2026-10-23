@@ -15,15 +15,17 @@ module Api
       def by_group
         group = Groups::Find.call(id: params[:id])
         result = Occupations::HistoryByGroup.call(group:, page: params[:page], per_page: params[:per_page])
+        paginated = PaginatedCollectionSerializer.call(result:, serializer: GroupOccupationHistorySerializer)
 
-        render json: PaginatedCollectionSerializer.call(result:, serializer: OccupationSerializer)
+        render json: { group: GroupSummarySerializer.new(group).attributes, **paginated }
       end
 
       def by_terrain
         terrain = Terrains::Find.call(id: params[:id])
         result = Occupations::HistoryByTerrain.call(terrain:, page: params[:page], per_page: params[:per_page])
+        paginated = PaginatedCollectionSerializer.call(result:, serializer: TerrainOccupationHistorySerializer)
 
-        render json: PaginatedCollectionSerializer.call(result:, serializer: OccupationSerializer)
+        render json: { terrain: TerrainSummarySerializer.new(terrain).attributes, **paginated }
       end
 
       private
