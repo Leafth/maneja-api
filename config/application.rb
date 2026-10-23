@@ -34,6 +34,8 @@ module ManejaApi
 
     config.log_tags = [ :request_id ]
 
+    config.active_job.queue_adapter = :sidekiq
+
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: false,

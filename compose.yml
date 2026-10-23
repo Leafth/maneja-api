@@ -15,6 +15,18 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7-alpine
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api:
     build:
       context: .
@@ -34,10 +46,35 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
+      REDIS_URL: redis://redis:6379/0
 
     depends_on:
       - db
+      - redis
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    command: bundle exec sidekiq -C config/sidekiq.yml
+
+    volumes:
+      - .:/rails
+      - bundle_data:/usr/local/bundle
+
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      REDIS_URL: redis://redis:6379/0
+
+    depends_on:
+      - db
+      - redis
 
 volumes:
   postgres_data:
+  redis_data:
   bundle_data:
