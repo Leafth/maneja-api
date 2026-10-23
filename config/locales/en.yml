@@ -12,6 +12,11 @@ en:
       password_reset_verify: "Rate limit exceeded for password reset verification."
     resource:
       not_found: "Resource not found."
+    occupations:
+      inactive_group: "The group is inactive."
+      inactive_terrain: "The terrain is inactive."
+      same_terrain: "The group is already in this terrain."
+      terrain_occupied: "The terrain is occupied."
   activerecord:
     models:
       user:
