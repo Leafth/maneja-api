@@ -21,6 +21,14 @@ RSpec.describe "DELETE /api/v1/terrains/:id", type: :request do
     expect(response).to have_http_status(:not_found)
   end
 
+  it "does not deactivate an occupied terrain" do
+    terrain = create(:terrain, :occupied)
+    create(:occupation, terrain:)
+    delete "/api/v1/terrains/#{terrain.id}", headers: headers
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response.parsed_body["errors"]["base"]).to be_present
+  end
+
   it "returns unauthorized when no token is provided" do
     terrain = create(:terrain)
     delete "/api/v1/terrains/#{terrain.id}"

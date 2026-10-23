@@ -28,7 +28,7 @@ module Api
       end
 
       def destroy
-        Terrains::Delete.call(id: params[:id])
+        Terrains::Deactivate.call(id: params[:id])
         head :no_content
       end
 
