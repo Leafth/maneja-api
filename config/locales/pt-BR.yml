@@ -33,6 +33,9 @@ pt-BR:
       terrain:
         one: "Terreno"
         other: "Terrenos"
+      feed:
+        one: "Ração"
+        other: "Rações"
     attributes:
       user:
         name: "Nome"
@@ -46,3 +49,6 @@ pt-BR:
         name: "Nome"
         rest_days: "Dias de Descanso"
         status: "Status"
+      feed:
+        name: "Nome"
+        stock_quantity: "Quantidade em Estoque"
