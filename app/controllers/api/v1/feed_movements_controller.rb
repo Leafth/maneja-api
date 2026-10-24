@@ -23,6 +23,14 @@ module Api
         render json: movement, serializer: FeedMovementSerializer, status: :created
       end
 
+      def index
+        result = FeedMovements::History.call(
+          feed_id: params[:feed_id],
+          page: params[:page], per_page: params[:per_page]
+        )
+        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedMovementSerializer)
+      end
+
       private
 
       def entry_params

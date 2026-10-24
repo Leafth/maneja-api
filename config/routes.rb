@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       resources :feeds, only: [ :create, :index, :show, :update, :destroy ] do
         post "movements/entry", to: "feed_movements#create_entry"
         post "movements/exit", to: "feed_movements#create_exit"
+        get "movements", to: "feed_movements#index"
       end
 
       get "health", to: "health#show"
