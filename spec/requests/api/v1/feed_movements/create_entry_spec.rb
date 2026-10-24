@@ -30,7 +30,7 @@ RSpec.describe "POST /api/v1/feeds/:feed_id/movements/entry", type: :request do
     expect(feed.reload.stock_quantity).to eq(150)
   end
 
-  it "returns unprocessable entity when attributes are invalid" do
+  it "returns unprocessable content when attributes are invalid" do
     feed = create(:feed, stock_quantity: 100)
     post "/api/v1/feeds/#{feed.id}/movements/entry", params: { entry: {
       quantity: -50,
