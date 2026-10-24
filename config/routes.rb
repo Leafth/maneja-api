@@ -27,7 +27,9 @@ Rails.application.routes.draw do
 
       resources :occupations, only: [ :create ]
 
-      resources :feeds, only: [ :create, :index, :show, :update, :destroy ]
+      resources :feeds, only: [ :create, :index, :show, :update, :destroy ] do
+        post "movements/entry", to: "feed_movements#create_entry"
+      end
 
       get "health", to: "health#show"
     end
