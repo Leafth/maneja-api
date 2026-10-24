@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :terrain do
+    association :user
     name { Faker::Address.community }
     rest_days { Faker::Number.between(from: 0, to: 60) }
     status { :available }

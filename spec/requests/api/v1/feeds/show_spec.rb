@@ -11,7 +11,7 @@ RSpec.describe "GET /api/v1/feeds/:id", type: :request do
   end
 
   it "returns a feed with the given id" do
-    feed = create(:feed)
+    feed = create(:feed, user:)
     get "/api/v1/feeds/#{feed.id}", headers: headers
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -28,8 +28,19 @@ RSpec.describe "GET /api/v1/feeds/:id", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    feed = create(:feed)
+    feed = create(:feed, user:)
     get "/api/v1/feeds/#{feed.id}"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns the same not found response for another user's feed and a missing feed" do
+    feed = create(:feed)
+    get "/api/v1/feeds/#{feed.id}", headers: headers
+    expect(response).to have_http_status(:not_found)
+    foreign_response = response.parsed_body
+
+    get "/api/v1/feeds/#{SecureRandom.uuid}", headers: headers
+    expect(response).to have_http_status(:not_found)
+    expect(response.parsed_body).to eq(foreign_response)
   end
 end

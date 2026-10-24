@@ -15,6 +15,7 @@ RSpec.describe "POST /api/v1/groups", type: :request do
   it "creates a group with valid attributes" do
     post "/api/v1/groups", params: { group: attributes }, headers: headers, as: :json
     expect(response).to have_http_status(:created)
+    expect(Group.find(response.parsed_body["id"]).user).to eq(user)
     expect(response.parsed_body).to include(
       "id" => be_present,
       "name" => attributes[:name],
@@ -24,12 +25,21 @@ RSpec.describe "POST /api/v1/groups", type: :request do
 
   it "returns validations errors with invalid attributes" do
     post "/api/v1/groups", params: { group: attributes.merge(name: nil) }, headers: headers, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["name"]).to be_present
   end
 
   it "returns unauthorized without valid authentication" do
     post "/api/v1/groups", params: { group: attributes }, as: :json
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "ignores ownership supplied by the client" do
+    other_user = create(:user)
+    post "/api/v1/groups", params: { group: attributes.merge(user_id: other_user.id) }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:created)
+    expect(Group.find(response.parsed_body["id"]).user).to eq(user)
+    expect(response.parsed_body).not_to have_key("user_id")
   end
 end

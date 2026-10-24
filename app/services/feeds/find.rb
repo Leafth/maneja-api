@@ -1,8 +1,8 @@
 module Feeds
   class Find
     class << self
-      def call(id:)
-        Feed.active.find(id)
+      def call(user:, id:)
+        user.feeds.active.find(id)
       end
     end
   end

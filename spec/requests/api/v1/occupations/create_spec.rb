@@ -10,8 +10,8 @@ RSpec.describe "POST /api/v1/occupations", type: :request do
     }
   end
 
-  let(:group) { create(:group) }
-  let(:terrain) { create(:terrain) }
+  let(:group) { create(:group, user:) }
+  let(:terrain) { create(:terrain, user:) }
 
   it "creates the current occupation" do
     post "/api/v1/occupations",
@@ -61,5 +61,23 @@ RSpec.describe "POST /api/v1/occupations", type: :request do
       }, as: :json
 
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found for a destination belonging to another user" do
+    destination = create(:terrain, :occupied)
+    post "/api/v1/occupations", params: {
+      occupation: { group_id: group.id, terrain_id: destination.id }
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
+  end
+
+  it "returns not found for a group belonging to another user" do
+    other_group = create(:group)
+    post "/api/v1/occupations", params: {
+      occupation: { group_id: other_group.id, terrain_id: terrain.id }
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
   end
 end

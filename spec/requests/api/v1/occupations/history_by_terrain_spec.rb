@@ -11,17 +11,28 @@ RSpec.describe "GET /api/v1/terrains/:id/occupations", type: :request do
   end
 
   it "returns the occupations for the terrain" do
-    terrain = create(:terrain)
-    occupation = create(:occupation, terrain:)
+    terrain = create(:terrain, user:)
+    occupation = create(:occupation, terrain:, group: create(:group, user:))
+    create(:occupation)
     get "/api/v1/terrains/#{terrain.id}/occupations", headers: headers
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
     expect(body["data"].pluck("id")).to eq([ occupation.id ])
+    expect(body["terrain"]["id"]).to eq(terrain.id)
+    expect(body["meta"]["total_items"]).to eq(1)
   end
 
   it "returns unauthorized without valid authentication" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     get "/api/v1/terrains/#{terrain.id}/occupations"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found for another user's terrain" do
+    terrain = create(:terrain)
+    create(:occupation, terrain:, group: create(:group, user: terrain.user))
+    get "/api/v1/terrains/#{terrain.id}/occupations", headers: headers
+
+    expect(response).to have_http_status(:not_found)
   end
 end

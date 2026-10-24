@@ -1,12 +1,12 @@
 module Occupations
   class Move
     class << self
-      def call(group:, destination:)
+      def call(user:, group:, destination:)
         ActiveRecord::Base.transaction do
-          group.lock!
+          group = user.groups.lock.find(group.id)
 
           current_occupation = group.occupations.active.lock.first
-          lock_terrains!(current_occupation, destination)
+          destination = lock_terrains!(user:, current_occupation:, destination:)
 
           MovementPolicy.validate!(group:, current_occupation:, destination:)
 
@@ -28,9 +28,10 @@ module Occupations
         Terrains::StartRest.call(terrain: occupation.terrain)
       end
 
-      def lock_terrains!(current_occupation, destination)
+      def lock_terrains!(user:, current_occupation:, destination:)
         terrains_ids = [ current_occupation&.terrain_id, destination.id ].compact.uniq.sort
-        Terrain.where(id: terrains_ids).order(:id).lock.load
+        terrains = user.terrains.order(:id).lock.find(terrains_ids)
+        terrains.find { |terrain| terrain.id == destination.id }
       end
     end
   end

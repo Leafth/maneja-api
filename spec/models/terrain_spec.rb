@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Terrain, type: :model do
+  describe 'ownership' do
+    it "belongs to a user" do
+      user = create(:user)
+      terrain = create(:terrain, user:)
+      expect(user.terrains).to contain_exactly(terrain)
+      expect(terrain.user).to eq(user)
+    end
+
+    it "requires a user" do
+      terrain = build(:terrain, user: nil)
+      expect(terrain).not_to be_valid
+      expect(terrain.errors[:user]).to be_present
+    end
+  end
+
   it "is valid with valid attributes" do
     expect(build(:terrain)).to be_valid
   end

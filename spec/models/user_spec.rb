@@ -50,6 +50,17 @@ RSpec.describe User, type: :model do
   end
 
   describe 'associations' do
+    [ :group, :terrain, :feed ].each do |resource|
+      it "destroys the associated #{resource} when the user is destroyed" do
+        user = create(:user)
+        record = create(resource, user:)
+
+        user.destroy!
+        expect(User.exists?(user.id)).to be false
+        expect(record.class.exists?(record.id)).to be false
+      end
+    end
+
     it "destroy associated sessions when the user is destroyed" do
       user = create(:user)
       session = create(:session, user: user)

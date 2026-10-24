@@ -5,6 +5,7 @@ module Api
 
       def create_entry
         movement = FeedMovements::CreateEntry.call(
+          user: current_user,
           feed_id: params[:feed_id],
           quantity: entry_params[:quantity],
           value: entry_params[:value],
@@ -15,6 +16,7 @@ module Api
 
       def create_exit
         movement = FeedMovements::CreateExit.call(
+          user: current_user,
           feed_id: params[:feed_id],
           quantity: exit_params[:quantity],
           reason: exit_params[:reason],
@@ -24,8 +26,9 @@ module Api
       end
 
       def index
-        feed = Feed.active.find(params[:feed_id])
+        feed = Feeds::Find.call(user: current_user, id: params[:feed_id])
         result = FeedMovements::History.call(
+          user: current_user,
           feed_id: feed.id,
           page: params[:page], per_page: params[:per_page]
         )

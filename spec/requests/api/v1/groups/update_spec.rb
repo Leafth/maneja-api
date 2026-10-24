@@ -9,7 +9,7 @@ RSpec.describe "PATCH /api/v1/groups/:id", type: :request do
   end
 
   it "updates the group" do
-    group = create(:group)
+    group = create(:group, user:)
     patch "/api/v1/groups/#{group.id}", params: { group: { name: "Updated Name", animal_count: 20 } }, headers: headers, as: :json
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -21,9 +21,9 @@ RSpec.describe "PATCH /api/v1/groups/:id", type: :request do
   end
 
   it "returns validation errors when the attributes are invalid" do
-    group = create(:group)
+    group = create(:group, user:)
     patch "/api/v1/groups/#{group.id}", params: { group: { animal_count: -10 } }, headers: headers, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["animal_count"]).to be_present
   end
 
@@ -33,8 +33,16 @@ RSpec.describe "PATCH /api/v1/groups/:id", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    group = create(:group)
+    group = create(:group, user:)
     patch "/api/v1/groups/#{group.id}", params: { group: { name: "Updated Name" } }, as: :json
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found without updating another user's group" do
+    group = create(:group, name: "Original Name")
+    patch "/api/v1/groups/#{group.id}", params: { group: { name: "Updated Name" } }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
+    expect(group.reload.name).to eq("Original Name")
   end
 end

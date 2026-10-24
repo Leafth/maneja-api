@@ -9,7 +9,7 @@ RSpec.describe "DELETE /api/v1/groups/:id", type: :request do
   end
 
   it "soft deletes the group" do
-    group = create(:group)
+    group = create(:group, user:)
     delete "/api/v1/groups/#{group.id}", headers: headers
     expect(response).to have_http_status(:no_content)
     expect(group.reload).to be_deleted
@@ -21,8 +21,8 @@ RSpec.describe "DELETE /api/v1/groups/:id", type: :request do
   end
 
   it "removes the group from its current terrain" do
-    group = create(:group)
-    terrain = create(:terrain, :occupied)
+    group = create(:group, user:)
+    terrain = create(:terrain, :occupied, user:)
     occupation = create(:occupation, group:, terrain:)
     delete "/api/v1/groups/#{group.id}", headers: headers
     expect(response).to have_http_status(:no_content)
@@ -30,8 +30,15 @@ RSpec.describe "DELETE /api/v1/groups/:id", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    group = create(:group)
+    group = create(:group, user:)
     delete "/api/v1/groups/#{group.id}"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found for another user's group" do
+    group = create(:group)
+    delete "/api/v1/groups/#{group.id}", headers: headers
+
+    expect(response).to have_http_status(:not_found)
   end
 end

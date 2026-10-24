@@ -16,8 +16,8 @@ module Terrains
     DEFAULT_SORT = { updated_at: :desc }.freeze
 
     class << self
-      def call(filters: {}, sort: nil, direction: nil)
-        scope = Filtering::Filterer.call(scope: Terrain.active, filters:, definitions: FILTERS)
+      def call(scope:, filters: {}, sort: nil, direction: nil)
+        scope = Filtering::Filterer.call(scope:, filters:, definitions: FILTERS)
         Sorting::Sorter.call(scope: scope, sort:, direction:, allowed: SORTS, default: DEFAULT_SORT)
       end
     end

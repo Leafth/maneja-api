@@ -11,8 +11,8 @@ RSpec.describe "GET /api/v1/feeds", type: :request do
   end
 
   it "filters feeds" do
-    matching_feed = create(:feed, name: "Premium Feed")
-    create(:feed, name: "Basic Feed")
+    matching_feed = create(:feed, user: user, name: "Premium Feed")
+    create(:feed, user: user, name: "Basic Feed")
     get "/api/v1/feeds", headers: headers, params: { name: "Premium" }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -20,8 +20,8 @@ RSpec.describe "GET /api/v1/feeds", type: :request do
   end
 
   it "sorts feeds" do
-    low_stock_feed = create(:feed, stock_quantity: 5)
-    high_stock_feed = create(:feed, stock_quantity: 20)
+    low_stock_feed = create(:feed, user: user, stock_quantity: 5)
+    high_stock_feed = create(:feed, user: user, stock_quantity: 20)
     get "/api/v1/feeds", headers: headers, params: { sort: "stock_quantity", direction: "desc" }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -29,7 +29,8 @@ RSpec.describe "GET /api/v1/feeds", type: :request do
   end
 
   it "returns a paginated list of feeds" do
-    create_list(:feed, 3)
+    create_list(:feed, 3, user: user)
+    create_list(:feed, 2)
     get "/api/v1/feeds", headers: headers, params: { page: 1, per_page: 2 }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)

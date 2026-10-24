@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
+  describe 'ownership' do
+    it "belongs to a user" do
+      user = create(:user)
+      group = create(:group, user:)
+      expect(user.groups).to contain_exactly(group)
+      expect(group.user).to eq(user)
+    end
+
+    it "requires a user" do
+      group = build(:group, user: nil)
+      expect(group).not_to be_valid
+      expect(group.errors[:user]).to be_present
+    end
+  end
+
   describe 'validations' do
     it "is valid with valid attributes" do
       group = build(:group)

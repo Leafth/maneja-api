@@ -31,7 +31,7 @@ RSpec.describe "POST /api/v1/auth/register", type: :request do
 
   it "returns validation errors for invalid user attributes" do
     post "/api/v1/auth/register", params: { user: attributes.merge(email: nil) }, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["email"]).to be_present
   end
 end

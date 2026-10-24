@@ -4,12 +4,13 @@ module Api
       before_action :authenticate_request!
 
       def create
-        group = Groups::Create.call(attributes: group_params)
+        group = Groups::Create.call(user: current_user, attributes: group_params)
         render json: group, serializer: GroupSerializer, status: :created
       end
 
       def index
         result = Groups::List.call(
+          user: current_user,
           filters: params.permit(:name, :min_animal_count, :max_animal_count).to_h,
           sort: params[:sort],
           direction: params[:direction],
@@ -18,17 +19,17 @@ module Api
       end
 
       def show
-        group = Groups::Find.call(id: params[:id])
+        group = Groups::Find.call(user: current_user, id: params[:id])
         render json: group, serializer: GroupSerializer, status: :ok
       end
 
       def update
-        group = Groups::Update.call(id: params[:id], attributes: group_params)
+        group = Groups::Update.call(user: current_user, id: params[:id], attributes: group_params)
         render json: group, serializer: GroupSerializer, status: :ok
       end
 
       def destroy
-        Groups::Deactivate.call(id: params[:id])
+        Groups::Deactivate.call(user: current_user, id: params[:id])
         head :no_content
       end
 

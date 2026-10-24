@@ -1,8 +1,8 @@
 module Feeds
   class Update
     class << self
-      def call(id:, name:)
-        feed = Feeds::Find.call(id:)
+      def call(user:, id:, name:)
+        feed = Feeds::Find.call(user:, id:)
         feed.update!(name:)
         feed
       end

@@ -1,8 +1,8 @@
 module Terrains
   class Find
     class << self
-      def call(id:)
-        Terrain.active.find(id)
+      def call(user:, id:)
+        user.terrains.active.find(id)
       end
     end
   end

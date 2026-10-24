@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Feed, type: :model do
+  describe 'ownership' do
+    it "belongs to a user" do
+      user = create(:user)
+      feed = create(:feed, user:)
+      expect(user.feeds).to contain_exactly(feed)
+      expect(feed.user).to eq(user)
+    end
+
+    it "requires a user" do
+      feed = build(:feed, user: nil)
+      expect(feed).not_to be_valid
+      expect(feed.errors[:user]).to be_present
+    end
+  end
+
   describe 'validations' do
     it "is valid with valid attributes" do
       feed = build(:feed)

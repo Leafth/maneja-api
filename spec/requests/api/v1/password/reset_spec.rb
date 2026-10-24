@@ -29,7 +29,7 @@ RSpec.describe "POST /api/v1/password/reset", type: :request do
 
   it "returns validation errors for an invalid password" do
     patch "/api/v1/password/reset", params: { reset_token:, password: "short", password_confirmation: "short" }, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["password"]).to be_present
   end
 

@@ -15,6 +15,7 @@ RSpec.describe "POST /api/v1/feeds", type: :request do
   it "creates a feed with valid attributes" do
     post "/api/v1/feeds", params: valid_params, headers: headers, as: :json
     expect(response).to have_http_status(:created)
+    expect(Feed.find(response.parsed_body["id"]).user).to eq(user)
     expect(response.parsed_body).to include(
       "id" => be_present,
       "name" => "Feed A",
@@ -31,5 +32,16 @@ RSpec.describe "POST /api/v1/feeds", type: :request do
   it "returns unauthorized without valid authentication" do
     post "/api/v1/feeds", params: valid_params, as: :json
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "ignores ownership supplied by the client" do
+    other_user = create(:user)
+    post "/api/v1/feeds", params: {
+      feed: valid_params[:feed].merge(user_id: other_user.id)
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:created)
+    expect(Feed.find(response.parsed_body["id"]).user).to eq(user)
+    expect(response.parsed_body).not_to have_key("user_id")
   end
 end

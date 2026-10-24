@@ -1,9 +1,9 @@
 module Terrains
   class Deactivate
     class << self
-      def call(id:)
+      def call(user:, id:)
         ActiveRecord::Base.transaction do
-          terrain = Terrain.active.lock.find(id)
+          terrain = user.terrains.active.lock.find(id)
           validate_deactivation!(terrain)
           terrain.soft_delete!
           terrain
