@@ -24,11 +24,14 @@ module Api
       end
 
       def index
+        feed = Feed.active.find(params[:feed_id])
         result = FeedMovements::History.call(
-          feed_id: params[:feed_id],
+          feed_id: feed.id,
           page: params[:page], per_page: params[:per_page]
         )
-        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedMovementSerializer)
+
+        paginated = PaginatedCollectionSerializer.call(result:, serializer: FeedMovementSerializer)
+        render json: { feed: FeedSummarySerializer.new(feed).attributes, **paginated }
       end
 
       private
