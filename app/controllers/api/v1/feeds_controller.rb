@@ -22,6 +22,11 @@ module Api
         render json: feed, serializer: FeedSerializer
       end
 
+      def update
+        feed = Feeds::Update.call(id: params[:id], name: feed_params[:name])
+        render json: feed, serializer: FeedSerializer
+      end
+
       private
 
       def feed_params
