@@ -10,7 +10,7 @@ module Api
           value: entry_params[:value],
           occurred_on: entry_params[:occurred_on]
         )
-        render json: movement, serializer: FeedMovementSerializer, status: :created
+        render json: movement, serializer: FeedMovementSerializer, include_feed_id: true, status: :created
       end
 
       def create_exit
@@ -20,7 +20,7 @@ module Api
           reason: exit_params[:reason],
           occurred_on: exit_params[:occurred_on]
         )
-        render json: movement, serializer: FeedMovementSerializer, status: :created
+        render json: movement, serializer: FeedMovementSerializer, include_feed_id: true, status: :created
       end
 
       def index

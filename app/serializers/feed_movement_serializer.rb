@@ -1,14 +1,12 @@
 class FeedMovementSerializer < ActiveModel::Serializer
-  attributes :id, :movement_type, :quantity, :occurred_on, :created_at, :updated_at
-
+  attribute :id
+  attribute :feed_id, if: :include_feed_id?
+  attributes :movement_type, :quantity
   attribute :value, if: :entry?
   attribute :reason, if: :exit?
+  attributes :occurred_on, :created_at, :updated_at
 
-  def entry?
-    object.entry?
-  end
-
-  def exit?
-    object.exit?
-  end
+  def include_feed_id? = instance_options[:include_feed_id]
+  def entry? = object.entry?
+  def exit? = object.exit?
 end
