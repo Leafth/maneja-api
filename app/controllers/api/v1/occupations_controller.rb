@@ -5,7 +5,7 @@ module Api
 
       def create
         group = Groups::Find.call(user: current_user, id: occupation_params[:group_id])
-        destination = Terrains::Find.call(id: occupation_params[:terrain_id])
+        destination = Terrains::Find.call(user: current_user, id: occupation_params[:terrain_id])
 
         occupation = Occupations::Move.call(group:, destination:)
 
@@ -21,7 +21,7 @@ module Api
       end
 
       def by_terrain
-        terrain = Terrains::Find.call(id: params[:id])
+        terrain = Terrains::Find.call(user: current_user, id: params[:id])
         result = Occupations::HistoryByTerrain.call(terrain:, page: params[:page], per_page: params[:per_page])
         paginated = PaginatedCollectionSerializer.call(result:, serializer: TerrainOccupationHistorySerializer)
 

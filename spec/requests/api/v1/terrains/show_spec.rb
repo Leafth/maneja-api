@@ -11,7 +11,7 @@ RSpec.describe "GET /api/v1/terrains/:id", type: :request do
   end
 
   it "returns a terrain" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     get "/api/v1/terrains/#{terrain.id}", headers: headers
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -24,7 +24,7 @@ RSpec.describe "GET /api/v1/terrains/:id", type: :request do
   end
 
   it "returns not found when the terrain is deleted" do
-    terrain = create(:terrain, :deleted)
+    terrain = create(:terrain, :deleted, user:)
     get "/api/v1/terrains/#{terrain.id}", headers: headers
     expect(response).to have_http_status(:not_found)
   end
@@ -35,8 +35,19 @@ RSpec.describe "GET /api/v1/terrains/:id", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     get "/api/v1/terrains/#{terrain.id}"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns the same not found response for another user's terrain and a missing terrain" do
+    terrain = create(:terrain)
+    get "/api/v1/terrains/#{terrain.id}", headers: headers
+    expect(response).to have_http_status(:not_found)
+    foreign_response = response.parsed_body
+
+    get "/api/v1/terrains/#{SecureRandom.uuid}", headers: headers
+    expect(response).to have_http_status(:not_found)
+    expect(response.parsed_body).to eq(foreign_response)
   end
 end

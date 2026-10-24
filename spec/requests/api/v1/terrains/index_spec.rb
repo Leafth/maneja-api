@@ -11,8 +11,8 @@ RSpec.describe "GET /api/v1/terrains", type: :request do
   end
 
   it "filters terrains" do
-    matching_terrain = create(:terrain, name: "North Pasture")
-    create(:terrain, name: "South Pasture")
+    matching_terrain = create(:terrain, user: user, name: "North Pasture")
+    create(:terrain, user: user, name: "South Pasture")
     get "/api/v1/terrains", headers: headers, params: { name: "North" }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -20,8 +20,8 @@ RSpec.describe "GET /api/v1/terrains", type: :request do
   end
 
   it "sorts terrains" do
-    shorter_rest = create(:terrain, rest_days: 5)
-    longer_rest = create(:terrain, rest_days: 20)
+    shorter_rest = create(:terrain, user: user, rest_days: 5)
+    longer_rest = create(:terrain, user: user, rest_days: 20)
     get "/api/v1/terrains", headers: headers, params: { sort: "rest_days", direction: "desc" }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -29,7 +29,8 @@ RSpec.describe "GET /api/v1/terrains", type: :request do
   end
 
   it "returns a paginated list of terrains" do
-    create_list(:terrain, 3)
+    create_list(:terrain, 3, user: user)
+    create_list(:terrain, 2)
     get "/api/v1/terrains", headers: headers, params: { page: 1, per_page: 2 }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -43,7 +44,7 @@ RSpec.describe "GET /api/v1/terrains", type: :request do
   end
 
   it "returns serialized terrain attributes" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     get "/api/v1/terrains", headers: headers
     serialized_terrain = response.parsed_body['data'].first
     expect(serialized_terrain).to include(

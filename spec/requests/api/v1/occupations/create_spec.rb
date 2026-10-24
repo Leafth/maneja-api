@@ -62,4 +62,13 @@ RSpec.describe "POST /api/v1/occupations", type: :request do
 
     expect(response).to have_http_status(:unauthorized)
   end
+
+  it "returns not found for a destination belonging to another user" do
+    destination = create(:terrain, :occupied)
+    post "/api/v1/occupations", params: {
+      occupation: { group_id: group.id, terrain_id: destination.id }
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
+  end
 end

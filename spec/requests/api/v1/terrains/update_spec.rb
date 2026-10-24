@@ -11,7 +11,7 @@ RSpec.describe "PATCH /api/v1/terrains/:id", type: :request do
   end
 
   it "updates a terrain" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     patch "/api/v1/terrains/#{terrain.id}", params: { terrain: { name: "Updated Terrain" } }, headers: headers, as: :json
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -24,7 +24,7 @@ RSpec.describe "PATCH /api/v1/terrains/:id", type: :request do
   end
 
   it "return validation errors when the attributes are invalid" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     patch "/api/v1/terrains/#{terrain.id}", params: { terrain: { rest_days: -5 } }, headers: headers, as: :json
     expect(response).to have_http_status(:unprocessable_entity)
     expect(response.parsed_body["errors"]["rest_days"]).to be_present
@@ -36,8 +36,29 @@ RSpec.describe "PATCH /api/v1/terrains/:id", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    terrain = create(:terrain)
+    terrain = create(:terrain, user:)
     patch "/api/v1/terrains/#{terrain.id}", params: { terrain: { name: "Updated Terrain" } }, as: :json
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found without updating another user's terrain" do
+    terrain = create(:terrain, name: "Original Name")
+    patch "/api/v1/terrains/#{terrain.id}", params: { terrain: { name: "Updated Terrain" } }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
+    expect(terrain.reload.name).to eq("Original Name")
+  end
+
+  it "ignores ownership and status supplied by the client" do
+    terrain = create(:terrain, :resting, user:)
+    other_user = create(:user)
+    patch "/api/v1/terrains/#{terrain.id}", params: {
+      terrain: { name: "Updated Terrain", user_id: other_user.id, status: "available" }
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:ok)
+    expect(terrain.reload.name).to eq("Updated Terrain")
+    expect(terrain.user).to eq(user)
+    expect(terrain).to be_resting
   end
 end
