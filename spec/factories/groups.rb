@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :group do
+    association :user
     name { Faker::Creature::Animal.name }
     animal_count { Faker::Number.between(from: 0, to: 100) }
     deleted_at { nil }

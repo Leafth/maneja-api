@@ -4,7 +4,7 @@ module Api
       before_action :authenticate_request!
 
       def create
-        feed = Feeds::Create.call(name: feed_params[:name], initial_stock_quantity: feed_params[:initial_stock_quantity])
+        feed = Feeds::Create.call(user: current_user, name: feed_params[:name], initial_stock_quantity: feed_params[:initial_stock_quantity])
         render json: feed, serializer: FeedSerializer, status: :created
       end
 

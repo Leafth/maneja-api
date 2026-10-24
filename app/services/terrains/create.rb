@@ -1,9 +1,9 @@
 module Terrains
   class Create
     class << self
-      def call(attributes:)
-        Terrain.create!(
-          attributes.merge(status: :available)
+      def call(user:, attributes:)
+        user.terrains.create!(
+          attributes.merge(status: :available, user:)
         )
       end
     end

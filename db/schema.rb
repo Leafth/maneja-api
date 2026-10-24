@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_24_125351) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_24_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -35,7 +35,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_125351) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
     t.index ["deleted_at"], name: "index_feeds_on_deleted_at"
+    t.index ["user_id"], name: "index_feeds_on_user_id"
   end
 
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -44,7 +46,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_125351) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
     t.index ["deleted_at"], name: "index_groups_on_deleted_at"
+    t.index ["user_id"], name: "index_groups_on_user_id"
   end
 
   create_table "occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -78,8 +82,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_125351) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
     t.index ["deleted_at"], name: "index_terrains_on_deleted_at"
     t.index ["status"], name: "index_terrains_on_status"
+    t.index ["user_id"], name: "index_terrains_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -95,7 +101,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_125351) do
   end
 
   add_foreign_key "feed_movements", "feeds"
+  add_foreign_key "feeds", "users"
+  add_foreign_key "groups", "users"
   add_foreign_key "occupations", "groups"
   add_foreign_key "occupations", "terrains"
   add_foreign_key "sessions", "users"
+  add_foreign_key "terrains", "users"
 end

@@ -4,7 +4,7 @@ module Api
       before_action :authenticate_request!
 
       def create
-        terrain = Terrains::Create.call(attributes: terrain_params)
+        terrain = Terrains::Create.call(user: current_user, attributes: terrain_params)
         render json: terrain, serializer: TerrainSerializer, status: :created
       end
 

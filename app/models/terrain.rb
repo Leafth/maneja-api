@@ -1,4 +1,6 @@
 class Terrain < ApplicationRecord
+  belongs_to :user
+
   has_many :occupations, dependent: :restrict_with_error
 
   enum :status, {

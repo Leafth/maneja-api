@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :occupation do
     association :group
-    association :terrain
+    terrain { association :terrain, user: group&.user || association(:user) }
 
     started_at { 1.days.ago }
     ended_at { nil }

@@ -15,6 +15,7 @@ RSpec.describe "POST /api/v1/groups", type: :request do
   it "creates a group with valid attributes" do
     post "/api/v1/groups", params: { group: attributes }, headers: headers, as: :json
     expect(response).to have_http_status(:created)
+    expect(Group.find(response.parsed_body["id"]).user).to eq(user)
     expect(response.parsed_body).to include(
       "id" => be_present,
       "name" => attributes[:name],

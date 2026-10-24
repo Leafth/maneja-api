@@ -15,6 +15,7 @@ RSpec.describe "POST /api/v1/feeds", type: :request do
   it "creates a feed with valid attributes" do
     post "/api/v1/feeds", params: valid_params, headers: headers, as: :json
     expect(response).to have_http_status(:created)
+    expect(Feed.find(response.parsed_body["id"]).user).to eq(user)
     expect(response.parsed_body).to include(
       "id" => be_present,
       "name" => "Feed A",

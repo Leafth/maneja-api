@@ -4,7 +4,7 @@ module Api
       before_action :authenticate_request!
 
       def create
-        group = Groups::Create.call(attributes: group_params)
+        group = Groups::Create.call(user: current_user, attributes: group_params)
         render json: group, serializer: GroupSerializer, status: :created
       end
 

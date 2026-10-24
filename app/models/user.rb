@@ -5,6 +5,9 @@ class User < ApplicationRecord
          :recoverable, :validatable
 
   has_many :sessions, dependent: :destroy
+  has_many :groups, dependent: :destroy
+  has_many :terrains, dependent: :destroy
+  has_many :feeds, dependent: :destroy
 
   validates :name, presence: true
 

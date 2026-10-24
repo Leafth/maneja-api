@@ -1,8 +1,8 @@
 module Groups
   class Create
     class << self
-      def call(attributes:)
-        Group.create!(attributes)
+      def call(user:, attributes:)
+        user.groups.create!(attributes.merge(user:))
       end
     end
   end
