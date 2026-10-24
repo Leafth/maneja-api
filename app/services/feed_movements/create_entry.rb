@@ -6,11 +6,11 @@ module FeedMovements
           feed = Feed.active.lock.find(feed_id)
 
           movement = FeedMovement.create!(
-            feed: feed,
+            feed:,
             movement_type: :entry,
-            quantity: quantity,
-            value: value,
-            occurred_on: occurred_on
+            quantity:,
+            value:,
+            occurred_on:
           )
 
           feed.update!(stock_quantity: feed.stock_quantity + quantity)

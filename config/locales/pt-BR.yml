@@ -17,6 +17,8 @@ pt-BR:
       inactive_terrain: "O terreno está inativo."
       same_terrain: "O grupo já está neste terreno."
       terrain_occupied: "O terreno está ocupado."
+    feed_movements:
+      insufficient_stock: "Estoque insuficiente para a quantidade solicitada."
   activerecord:
     errors:
       messages:

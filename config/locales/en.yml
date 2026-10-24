@@ -17,6 +17,8 @@ en:
       inactive_terrain: "The terrain is inactive."
       same_terrain: "The group is already in this terrain."
       terrain_occupied: "The terrain is occupied."
+    feed_movements:
+      insufficient_stock: "Insufficient stock for the requested quantity."
   activerecord:
     models:
       user:
