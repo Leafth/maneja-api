@@ -8,6 +8,15 @@ module Api
         render json: feed, serializer: FeedSerializer, status: :created
       end
 
+      def index
+        result = Feeds::List.call(
+          filters: params.permit(:name, :min_stock_quantity, :max_stock_quantity).to_h,
+          sort: params[:sort],
+          direction: params[:direction],
+          page: params[:page], per_page: params[:per_page])
+        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedSerializer)
+      end
+
       def show
         feed = Feeds::Find.call(id: params[:id])
         render json: feed, serializer: FeedSerializer
