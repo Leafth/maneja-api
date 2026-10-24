@@ -10,8 +10,8 @@ RSpec.describe "POST /api/v1/occupations", type: :request do
     }
   end
 
-  let(:group) { create(:group) }
-  let(:terrain) { create(:terrain) }
+  let(:group) { create(:group, user:) }
+  let(:terrain) { create(:terrain, user:) }
 
   it "creates the current occupation" do
     post "/api/v1/occupations",

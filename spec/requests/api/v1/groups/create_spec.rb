@@ -33,4 +33,13 @@ RSpec.describe "POST /api/v1/groups", type: :request do
     post "/api/v1/groups", params: { group: attributes }, as: :json
     expect(response).to have_http_status(:unauthorized)
   end
+
+  it "ignores ownership supplied by the client" do
+    other_user = create(:user)
+    post "/api/v1/groups", params: { group: attributes.merge(user_id: other_user.id) }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:created)
+    expect(Group.find(response.parsed_body["id"]).user).to eq(user)
+    expect(response.parsed_body).not_to have_key("user_id")
+  end
 end

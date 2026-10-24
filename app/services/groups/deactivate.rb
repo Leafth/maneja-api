@@ -1,9 +1,9 @@
 module Groups
   class Deactivate
     class << self
-      def call(id:)
+      def call(user:, id:)
         ActiveRecord::Base.transaction do
-          group = Group.active.lock.find(id)
+          group = user.groups.active.lock.find(id)
           occupation = group.occupations.active.lock.first
           close_occupation(occupation) if occupation
           group.soft_delete!

@@ -9,7 +9,7 @@ RSpec.describe "GET /api/v1/groups/:id", type: :request do
   end
 
   it "returns the group with the given id" do
-    group = create(:group)
+    group = create(:group, user:)
     get "/api/v1/groups/#{group.id}", headers: headers
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -26,8 +26,19 @@ RSpec.describe "GET /api/v1/groups/:id", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    group = create(:group)
+    group = create(:group, user:)
     get "/api/v1/groups/#{group.id}"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns the same not found response for another user's group and a missing group" do
+    group = create(:group)
+    get "/api/v1/groups/#{group.id}", headers: headers
+    expect(response).to have_http_status(:not_found)
+    foreign_response = response.parsed_body
+
+    get "/api/v1/groups/#{SecureRandom.uuid}", headers: headers
+    expect(response).to have_http_status(:not_found)
+    expect(response.parsed_body).to eq(foreign_response)
   end
 end

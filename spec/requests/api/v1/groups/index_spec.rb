@@ -9,8 +9,8 @@ RSpec.describe 'GET /api/v1/groups', type: :request do
   end
 
   it "filters groups" do
-    matching_group = create(:group, name: "North Herd")
-    create(:group, name: "South Herd")
+    matching_group = create(:group, user: user, name: "North Herd")
+    create(:group, user: user, name: "South Herd")
     get "/api/v1/groups", headers: headers, params: { name: "North" }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -18,8 +18,8 @@ RSpec.describe 'GET /api/v1/groups', type: :request do
   end
 
   it "sorts groups" do
-    small_group = create(:group, animal_count: 5)
-    large_group = create(:group, animal_count: 20)
+    small_group = create(:group, user: user, animal_count: 5)
+    large_group = create(:group, user: user, animal_count: 20)
     get "/api/v1/groups", headers: headers, params: { sort: "animal_count", direction: "desc" }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -27,7 +27,8 @@ RSpec.describe 'GET /api/v1/groups', type: :request do
   end
 
   it 'returns a paginated list of groups' do
-    create_list(:group, 3)
+    create_list(:group, 3, user: user)
+    create_list(:group, 2)
     get "/api/v1/groups", headers: headers, params: { page: 1, per_page: 2 }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)
@@ -41,7 +42,7 @@ RSpec.describe 'GET /api/v1/groups', type: :request do
   end
 
   it "returns serialized group attributes" do
-    group = create(:group)
+    group = create(:group, user:)
     get "/api/v1/groups", headers: headers
     serialized_group = response.parsed_body['data'].first
     expect(serialized_group).to include(

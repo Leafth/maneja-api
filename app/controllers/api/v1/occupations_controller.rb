@@ -4,7 +4,7 @@ module Api
       before_action :authenticate_request!
 
       def create
-        group = Groups::Find.call(id: occupation_params[:group_id])
+        group = Groups::Find.call(user: current_user, id: occupation_params[:group_id])
         destination = Terrains::Find.call(id: occupation_params[:terrain_id])
 
         occupation = Occupations::Move.call(group:, destination:)
@@ -13,7 +13,7 @@ module Api
       end
 
       def by_group
-        group = Groups::Find.call(id: params[:id])
+        group = Groups::Find.call(user: current_user, id: params[:id])
         result = Occupations::HistoryByGroup.call(group:, page: params[:page], per_page: params[:per_page])
         paginated = PaginatedCollectionSerializer.call(result:, serializer: GroupOccupationHistorySerializer)
 

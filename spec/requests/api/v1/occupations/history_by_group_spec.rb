@@ -11,7 +11,7 @@ RSpec.describe "GET /api/v1/groups/:id/occupations", type: :request do
   end
 
   it "returns the occupations for the group" do
-    group = create(:group)
+    group = create(:group, user:)
     occupation = create(:occupation, group:)
     get "/api/v1/groups/#{group.id}/occupations", headers: headers
     body = response.parsed_body
@@ -20,8 +20,16 @@ RSpec.describe "GET /api/v1/groups/:id/occupations", type: :request do
   end
 
   it "returns unauthorized without valid authentication" do
-    group = create(:group)
+    group = create(:group, user:)
     get "/api/v1/groups/#{group.id}/occupations"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found for another user's group" do
+    group = create(:group)
+    create(:occupation, group:)
+    get "/api/v1/groups/#{group.id}/occupations", headers: headers
+
+    expect(response).to have_http_status(:not_found)
   end
 end
