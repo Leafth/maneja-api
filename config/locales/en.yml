@@ -17,6 +17,8 @@ en:
       inactive_terrain: "The terrain is inactive."
       same_terrain: "The group is already in this terrain."
       terrain_occupied: "The terrain is occupied."
+    feed_movements:
+      insufficient_stock: "Insufficient stock for the requested quantity."
   activerecord:
     models:
       user:
@@ -31,6 +33,9 @@ en:
       feed:
         one: "Feed"
         other: "Feeds"
+      feed_movement:
+        one: "Feed Movement"
+        other: "Feed Movements"
     attributes:
       user:
         name: "Name"
@@ -47,3 +52,10 @@ en:
       feed:
         name: "Name"
         stock_quantity: "Stock Quantity"
+      feed_movement:
+        feed: "Feed"
+        movement_type: "Movement Type"
+        quantity: "Quantity"
+        value: "Value"
+        reason: "Reason"
+        occurred_on: "Occurred On"

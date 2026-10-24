@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_24_090253) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_24_125351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "feed_movements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "feed_id", null: false
+    t.string "movement_type", null: false
+    t.decimal "quantity", precision: 12, scale: 2, null: false
+    t.decimal "value", precision: 12, scale: 2
+    t.string "reason"
+    t.date "occurred_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feed_id"], name: "index_feed_movements_on_feed_id"
+    t.index ["movement_type"], name: "index_feed_movements_on_movement_type"
+    t.index ["occurred_on"], name: "index_feed_movements_on_occurred_on"
+  end
 
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
@@ -80,6 +94,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_090253) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "feed_movements", "feeds"
   add_foreign_key "occupations", "groups"
   add_foreign_key "occupations", "terrains"
   add_foreign_key "sessions", "users"
