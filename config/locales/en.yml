@@ -28,6 +28,9 @@ en:
       terrain:
         one: "Terrain"
         other: "Terrains"
+      feed:
+        one: "Feed"
+        other: "Feeds"
     attributes:
       user:
         name: "Name"
@@ -41,3 +44,6 @@ en:
         name: "Name"
         rest_days: "Rest Days"
         status: "Status"
+      feed:
+        name: "Name"
+        stock_quantity: "Stock Quantity"
