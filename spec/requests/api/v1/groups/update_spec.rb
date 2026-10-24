@@ -23,7 +23,7 @@ RSpec.describe "PATCH /api/v1/groups/:id", type: :request do
   it "returns validation errors when the attributes are invalid" do
     group = create(:group, user:)
     patch "/api/v1/groups/#{group.id}", params: { group: { animal_count: -10 } }, headers: headers, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["animal_count"]).to be_present
   end
 

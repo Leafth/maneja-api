@@ -26,7 +26,7 @@ RSpec.describe "PATCH /api/v1/terrains/:id", type: :request do
   it "return validation errors when the attributes are invalid" do
     terrain = create(:terrain, user:)
     patch "/api/v1/terrains/#{terrain.id}", params: { terrain: { rest_days: -5 } }, headers: headers, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["rest_days"]).to be_present
   end
 

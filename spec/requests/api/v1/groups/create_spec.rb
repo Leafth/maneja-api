@@ -25,7 +25,7 @@ RSpec.describe "POST /api/v1/groups", type: :request do
 
   it "returns validations errors with invalid attributes" do
     post "/api/v1/groups", params: { group: attributes.merge(name: nil) }, headers: headers, as: :json
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["name"]).to be_present
   end
 

@@ -25,7 +25,7 @@ RSpec.describe "DELETE /api/v1/terrains/:id", type: :request do
     terrain = create(:terrain, :occupied, user:)
     create(:occupation, terrain:, group: create(:group, user:))
     delete "/api/v1/terrains/#{terrain.id}", headers: headers
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(response.parsed_body["errors"]["base"]).to be_present
   end
 
