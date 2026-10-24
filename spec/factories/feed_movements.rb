@@ -6,6 +6,12 @@ FactoryBot.define do
     value { Faker::Number.decimal(l_digits: 3, r_digits: 2) }
     occurred_on { Faker::Date.backward(days: 30) }
 
+    trait :entry do
+      movement_type { :entry }
+      value { Faker::Number.decimal(l_digits: 3, r_digits: 2) }
+      reason { nil }
+    end
+
     trait :exit do
       movement_type { :exit }
       value { nil }
