@@ -33,6 +33,9 @@ en:
       feed:
         one: "Feed"
         other: "Feeds"
+      feed_movement:
+        one: "Feed Movement"
+        other: "Feed Movements"
     attributes:
       user:
         name: "Name"
@@ -49,3 +52,10 @@ en:
       feed:
         name: "Name"
         stock_quantity: "Stock Quantity"
+      feed_movement:
+        feed: "Feed"
+        movement_type: "Movement Type"
+        quantity: "Quantity"
+        value: "Value"
+        reason: "Reason"
+        occurred_on: "Occurred On"

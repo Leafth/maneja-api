@@ -38,6 +38,9 @@ pt-BR:
       feed:
         one: "Ração"
         other: "Rações"
+      feed_movement:
+        one: "Movimentação de Ração"
+        other: "Movimentações de Ração"
     attributes:
       user:
         name: "Nome"
@@ -54,3 +57,10 @@ pt-BR:
       feed:
         name: "Nome"
         stock_quantity: "Quantidade em Estoque"
+      feed_movement:
+        feed: "Ração"
+        movement_type: "Tipo de Movimentação"
+        quantity: "Quantidade"
+        value: "Valor"
+        reason: "Motivo"
+        occurred_on: "Data da Ocorrência"
