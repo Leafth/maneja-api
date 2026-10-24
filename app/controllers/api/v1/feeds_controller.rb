@@ -8,6 +8,11 @@ module Api
         render json: feed, serializer: FeedSerializer, status: :created
       end
 
+      def show
+        feed = Feeds::Find.call(id: params[:id])
+        render json: feed, serializer: FeedSerializer
+      end
+
       private
 
       def feed_params

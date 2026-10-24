@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
       resources :occupations, only: [ :create ]
 
-      resources :feeds, only: [ :create ]
+      resources :feeds, only: [ :create, :show ]
 
       get "health", to: "health#show"
     end
