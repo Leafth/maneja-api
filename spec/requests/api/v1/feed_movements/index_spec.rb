@@ -24,6 +24,7 @@ RSpec.describe "GET /api/v1/feeds/:feed_id/movements", type: :request do
   it "returns a paginated list of feed movements" do
     feed = create(:feed, user: user, stock_quantity: 100)
     create_list(:feed_movement, 3, feed:, movement_type: "entry", quantity: 50, value: 200, occurred_on: Date.current)
+    create_list(:feed_movement, 2)
     get "/api/v1/feeds/#{feed.id}/movements", headers: headers, params: { page: 1, per_page: 2 }
     body = response.parsed_body
     expect(response).to have_http_status(:ok)

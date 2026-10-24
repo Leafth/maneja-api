@@ -1,9 +1,9 @@
 module FeedMovements
   class CreateExit
     class << self
-      def call(feed_id:, quantity:, reason:, occurred_on:)
+      def call(user:, feed_id:, quantity:, reason:, occurred_on:)
         ActiveRecord::Base.transaction do
-          feed = Feed.active.lock.find(feed_id)
+          feed = user.feeds.active.lock.find(feed_id)
 
           movement = FeedMovement.new(
             feed:,

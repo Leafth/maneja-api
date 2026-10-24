@@ -11,7 +11,7 @@ RSpec.describe "POST /api/v1/feeds/:feed_id/movements/entry", type: :request do
   end
 
   it "creates a entry movement for the feed" do
-    feed = create(:feed, stock_quantity: 100)
+    feed = create(:feed, user: user, stock_quantity: 100)
     post "/api/v1/feeds/#{feed.id}/movements/entry", params: { entry: {
       quantity: 50,
       value: 200,
@@ -31,7 +31,7 @@ RSpec.describe "POST /api/v1/feeds/:feed_id/movements/entry", type: :request do
   end
 
   it "returns unprocessable content when attributes are invalid" do
-    feed = create(:feed, stock_quantity: 100)
+    feed = create(:feed, user: user, stock_quantity: 100)
     post "/api/v1/feeds/#{feed.id}/movements/entry", params: { entry: {
       quantity: -50,
       value: 200,
@@ -53,7 +53,7 @@ RSpec.describe "POST /api/v1/feeds/:feed_id/movements/entry", type: :request do
   end
 
   it "returns unauthorized when no token is provided" do
-    feed = create(:feed, stock_quantity: 100)
+    feed = create(:feed, user: user, stock_quantity: 100)
     post "/api/v1/feeds/#{feed.id}/movements/entry", params: { entry: {
       quantity: 50,
       value: 200,
@@ -61,5 +61,16 @@ RSpec.describe "POST /api/v1/feeds/:feed_id/movements/entry", type: :request do
     } }, as: :json
 
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found for another user's feed" do
+    feed = create(:feed)
+    post "/api/v1/feeds/#{feed.id}/movements/entry", params: { entry: {
+      quantity: 50,
+      value: 200,
+      occurred_on: Date.current
+    } }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
   end
 end

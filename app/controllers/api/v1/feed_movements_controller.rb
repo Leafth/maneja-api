@@ -5,6 +5,7 @@ module Api
 
       def create_entry
         movement = FeedMovements::CreateEntry.call(
+          user: current_user,
           feed_id: params[:feed_id],
           quantity: entry_params[:quantity],
           value: entry_params[:value],
@@ -15,6 +16,7 @@ module Api
 
       def create_exit
         movement = FeedMovements::CreateExit.call(
+          user: current_user,
           feed_id: params[:feed_id],
           quantity: exit_params[:quantity],
           reason: exit_params[:reason],
