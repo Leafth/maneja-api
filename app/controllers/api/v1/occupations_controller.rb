@@ -7,7 +7,7 @@ module Api
         group = Groups::Find.call(user: current_user, id: occupation_params[:group_id])
         destination = Terrains::Find.call(user: current_user, id: occupation_params[:terrain_id])
 
-        occupation = Occupations::Move.call(group:, destination:)
+        occupation = Occupations::Move.call(user: current_user, group:, destination:)
 
         render json: occupation, serializer: OccupationSerializer, status: :created
       end

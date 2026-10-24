@@ -53,5 +53,19 @@ RSpec.describe Groups::Deactivate, type: :service do
       expect(occupation.reload).to be_active
       expect(terrain.reload).to be_occupied
     end
+
+    it "does not deactivate a group whose occupation references another user's terrain" do
+      group = create(:group, user:)
+      terrain = create(:terrain, :occupied, rest_days: 10)
+      occupation = create(:occupation, group:, terrain:)
+
+      expect {
+        described_class.call(user:, id: group.id)
+      }.to raise_error(ActiveRecord::RecordNotFound)
+
+      expect(group.reload).not_to be_deleted
+      expect(occupation.reload).to be_active
+      expect(terrain.reload).to be_occupied
+    end
   end
 end

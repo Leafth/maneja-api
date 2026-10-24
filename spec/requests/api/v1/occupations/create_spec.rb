@@ -71,4 +71,13 @@ RSpec.describe "POST /api/v1/occupations", type: :request do
 
     expect(response).to have_http_status(:not_found)
   end
+
+  it "returns not found for a group belonging to another user" do
+    other_group = create(:group)
+    post "/api/v1/occupations", params: {
+      occupation: { group_id: other_group.id, terrain_id: terrain.id }
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:not_found)
+  end
 end
