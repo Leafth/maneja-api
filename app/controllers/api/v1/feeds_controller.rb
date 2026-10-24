@@ -27,6 +27,11 @@ module Api
         render json: feed, serializer: FeedSerializer
       end
 
+      def destroy
+        Feeds::Deactivate.call(id: params[:id])
+        head :no_content
+      end
+
       private
 
       def feed_params
