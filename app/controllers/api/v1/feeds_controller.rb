@@ -10,6 +10,7 @@ module Api
 
       def index
         result = Feeds::List.call(
+          user: current_user,
           filters: params.permit(:name, :min_stock_quantity, :max_stock_quantity).to_h,
           sort: params[:sort],
           direction: params[:direction],
@@ -18,17 +19,17 @@ module Api
       end
 
       def show
-        feed = Feeds::Find.call(id: params[:id])
+        feed = Feeds::Find.call(user: current_user, id: params[:id])
         render json: feed, serializer: FeedSerializer
       end
 
       def update
-        feed = Feeds::Update.call(id: params[:id], name: feed_params[:name])
+        feed = Feeds::Update.call(user: current_user, id: params[:id], name: feed_params[:name])
         render json: feed, serializer: FeedSerializer
       end
 
       def destroy
-        Feeds::Deactivate.call(id: params[:id])
+        Feeds::Deactivate.call(user: current_user, id: params[:id])
         head :no_content
       end
 

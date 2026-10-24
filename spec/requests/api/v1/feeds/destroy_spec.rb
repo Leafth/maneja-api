@@ -11,7 +11,7 @@ RSpec.describe "DELETE /api/v1/feeds/:id", type: :request do
   end
 
   it "soft deletes the feed" do
-    feed = create(:feed)
+    feed = create(:feed, user:)
     delete "/api/v1/feeds/#{feed.id}", headers: headers
     expect(response).to have_http_status(:no_content)
     expect(feed.reload).to be_deleted
@@ -23,14 +23,21 @@ RSpec.describe "DELETE /api/v1/feeds/:id", type: :request do
   end
 
   it "returns not found when the feed is already deleted" do
-    feed = create(:feed, :deleted)
+    feed = create(:feed, :deleted, user:)
     delete "/api/v1/feeds/#{feed.id}", headers: headers
     expect(response).to have_http_status(:not_found)
   end
 
   it "returns unauthorized when no token is provided" do
-    feed = create(:feed)
+    feed = create(:feed, user:)
     delete "/api/v1/feeds/#{feed.id}"
     expect(response).to have_http_status(:unauthorized)
+  end
+
+  it "returns not found for another user's feed" do
+    feed = create(:feed)
+    delete "/api/v1/feeds/#{feed.id}", headers: headers
+
+    expect(response).to have_http_status(:not_found)
   end
 end

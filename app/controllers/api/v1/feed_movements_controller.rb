@@ -24,8 +24,9 @@ module Api
       end
 
       def index
-        feed = Feed.active.find(params[:feed_id])
+        feed = Feeds::Find.call(user: current_user, id: params[:feed_id])
         result = FeedMovements::History.call(
+          user: current_user,
           feed_id: feed.id,
           page: params[:page], per_page: params[:per_page]
         )

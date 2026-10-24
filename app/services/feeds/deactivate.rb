@@ -1,8 +1,8 @@
 module Feeds
   class Deactivate
     class << self
-      def call(id:)
-        feed = Feeds::Find.call(id:)
+      def call(user:, id:)
+        feed = Feeds::Find.call(user:, id:)
         feed.soft_delete!
         feed
       end

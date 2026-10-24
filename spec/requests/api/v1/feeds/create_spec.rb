@@ -33,4 +33,15 @@ RSpec.describe "POST /api/v1/feeds", type: :request do
     post "/api/v1/feeds", params: valid_params, as: :json
     expect(response).to have_http_status(:unauthorized)
   end
+
+  it "ignores ownership supplied by the client" do
+    other_user = create(:user)
+    post "/api/v1/feeds", params: {
+      feed: valid_params[:feed].merge(user_id: other_user.id)
+    }, headers: headers, as: :json
+
+    expect(response).to have_http_status(:created)
+    expect(Feed.find(response.parsed_body["id"]).user).to eq(user)
+    expect(response.parsed_body).not_to have_key("user_id")
+  end
 end
