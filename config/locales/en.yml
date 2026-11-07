@@ -19,6 +19,9 @@ en:
       terrain_occupied: "The terrain is occupied."
     feed_movements:
       insufficient_stock: "Insufficient stock for the requested quantity."
+  feed_movements:
+    reasons:
+      feeding: "Feeding group %{group_name}"
   activerecord:
     models:
       user:

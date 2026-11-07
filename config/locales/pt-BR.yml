@@ -19,6 +19,9 @@ pt-BR:
       terrain_occupied: "O terreno está ocupado."
     feed_movements:
       insufficient_stock: "Estoque insuficiente para a quantidade solicitada."
+  feed_movements:
+    reasons:
+      feeding: "Alimentação do grupo %{group_name}"
   activerecord:
     errors:
       messages:
