@@ -36,6 +36,9 @@ en:
       feed_movement:
         one: "Feed Movement"
         other: "Feed Movements"
+      feed_requirement:
+        one: "Feed Requirement"
+        other: "Feed Requirements"
     attributes:
       user:
         name: "Name"
@@ -59,3 +62,7 @@ en:
         value: "Value"
         reason: "Reason"
         occurred_on: "Occurred On"
+      feed_requirement:
+        group: "Group"
+        feed: "Feed"
+        quantity_per_animal_kg: "Quantity per Animal (kg)"
