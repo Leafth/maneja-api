@@ -41,6 +41,9 @@ pt-BR:
       feed_movement:
         one: "Movimentação de Ração"
         other: "Movimentações de Ração"
+      feed_requirement:
+        one: "Necessidade Alimentar"
+        other: "Necessidades Alimentares"
     attributes:
       user:
         name: "Nome"
@@ -64,3 +67,7 @@ pt-BR:
         value: "Valor"
         reason: "Motivo"
         occurred_on: "Data da Ocorrência"
+      feed_requirement:
+        group: "Grupo"
+        feed: "Ração"
+        quantity_per_animal_kg: "Quantidade por Animal (kg)"
