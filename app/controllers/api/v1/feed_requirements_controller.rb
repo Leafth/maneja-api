@@ -11,7 +11,7 @@ module Api
           quantity_per_animal_kg: feed_requirement_params[:quantity_per_animal_kg]
         )
 
-        render json: feed_requirement, serializer: FeedRequirementSerializer, status: :created
+        render json: feed_requirement, serializer: FeedRequirementSerializer, include_group_id: true, status: :created
       end
 
       def index
@@ -20,7 +20,14 @@ module Api
           group_id: params[:group_id]
         )
 
-        render json: feed_requirements, each_serializer: FeedRequirementSerializer
+        data = feed_requirements.map do |feed_requirement|
+          FeedRequirementSerializer.new(feed_requirement, include_total_daily_kg: true).attributes
+        end
+
+        render json: {
+          group_id: params[:group_id],
+          feed_requirements: data
+        }, status: :ok
       end
 
       def update
@@ -32,7 +39,7 @@ module Api
           quantity_per_animal_kg: feed_requirement_params[:quantity_per_animal_kg]
         )
 
-        render json: feed_requirement, serializer: FeedRequirementSerializer, status: :ok
+        render json: feed_requirement, serializer: FeedRequirementSerializer, include_group_id: true, status: :ok
       end
 
       def destroy

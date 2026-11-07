@@ -18,15 +18,17 @@ RSpec.describe "GET /api/v1/groups/:group_id/feed_requirements", type: :request 
     get "/api/v1/groups/#{group.id}/feed_requirements", headers: headers
     expect(response).to have_http_status(:ok)
     body = response.parsed_body
-    expect(body.size).to eq(2)
-    expect(body.pluck('id')).to match_array([ feed_requirement.id, other_feed_requirement.id ])
+    expect(body["group_id"]).to eq(group.id)
+    expect(body["feed_requirements"].size).to eq(2)
+    expect(body["feed_requirements"].pluck('id')).to match_array([ feed_requirement.id, other_feed_requirement.id ])
   end
 
   it "returns an empty collection if the group has no feed requirements" do
     get "/api/v1/groups/#{group.id}/feed_requirements", headers: headers
     expect(response).to have_http_status(:ok)
     body = response.parsed_body
-    expect(body).to be_empty
+    expect(body["group_id"]).to eq(group.id)
+    expect(body["feed_requirements"]).to be_empty
   end
 
   it "returns not found when group belongs to another user" do
