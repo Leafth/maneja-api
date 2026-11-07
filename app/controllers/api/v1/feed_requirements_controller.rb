@@ -35,6 +35,16 @@ module Api
         render json: feed_requirement, serializer: FeedRequirementSerializer, status: :ok
       end
 
+      def destroy
+        FeedRequirements::Destroy.call(
+          user: current_user,
+          group_id: params[:group_id],
+          id: params[:id]
+        )
+
+        head :no_content
+      end
+
       private
 
       def feed_requirement_params
