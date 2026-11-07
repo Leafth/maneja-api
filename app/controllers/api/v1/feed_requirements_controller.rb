@@ -23,6 +23,18 @@ module Api
         render json: feed_requirements, each_serializer: FeedRequirementSerializer
       end
 
+      def update
+        feed_requirement = FeedRequirements::Update.call(
+          user: current_user,
+          group_id: params[:group_id],
+          id: params[:id],
+          feed_id: feed_requirement_params[:feed_id],
+          quantity_per_animal_kg: feed_requirement_params[:quantity_per_animal_kg]
+        )
+
+        render json: feed_requirement, serializer: FeedRequirementSerializer, status: :ok
+      end
+
       private
 
       def feed_requirement_params
