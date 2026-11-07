@@ -14,6 +14,15 @@ module Api
         render json: feed_requirement, serializer: FeedRequirementSerializer, status: :created
       end
 
+      def index
+        feed_requirements = FeedRequirements::List.call(
+          user: current_user,
+          group_id: params[:group_id]
+        )
+
+        render json: feed_requirements, each_serializer: FeedRequirementSerializer
+      end
+
       private
 
       def feed_requirement_params
