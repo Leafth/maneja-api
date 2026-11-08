@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
       resources :groups, only: [ :create, :index, :show, :update, :destroy ] do
         get :occupations, to: "occupations#by_group", on: :member
+        resources :feedings, only: [ :create ]
         resources :feed_requirements, only: [ :create, :index, :update, :destroy ]
       end
 
