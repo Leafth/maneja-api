@@ -12,7 +12,20 @@ module Api
           occurred_at: feeding_params[:occurred_at]
         )
 
-        render json: feeding, serializer: FeedingSerializer, status: :created
+        render json: feeding, serializer: FeedingSerializer, include_group_id: true, status: :created
+      end
+
+      def index
+        result = Feedings::History.call(
+          user: current_user,
+          group_id: params[:group_id],
+          page: params[:page],
+          per_page: params[:per_page]
+        )
+
+        paginated = PaginatedCollectionSerializer.call(result:, serializer: FeedingSerializer)
+
+        render json: { group_id: params[:group_id], **paginated }
       end
 
       private
