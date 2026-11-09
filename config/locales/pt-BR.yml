@@ -18,7 +18,10 @@ pt-BR:
       same_terrain: "O grupo já está neste terreno."
       terrain_occupied: "O terreno está ocupado."
     feed_movements:
-      insufficient_stock: "Estoque insuficiente para a quantidade solicitada."
+      insufficient_stock: "insuficiente para a quantidade solicitada."
+  feed_movements:
+    reasons:
+      feeding: "Alimentação do grupo %{group_name}"
   activerecord:
     errors:
       messages:
@@ -44,6 +47,9 @@ pt-BR:
       feed_requirement:
         one: "Necessidade Alimentar"
         other: "Necessidades Alimentares"
+      feeding:
+        one: "Alimentação"
+        other: "Alimentações"
     attributes:
       user:
         name: "Nome"
@@ -71,3 +77,8 @@ pt-BR:
         group: "Grupo"
         feed: "Ração"
         quantity_per_animal_kg: "Quantidade por Animal (kg)"
+      feeding:
+        group: "Grupo"
+        feed: "Ração"
+        quantity: "Quantidade"
+        occurred_at: "Data e Hora da Alimentação"

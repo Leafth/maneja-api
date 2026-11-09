@@ -3,6 +3,7 @@ class Group < ApplicationRecord
 
   has_many :occupations, dependent: :restrict_with_error
   has_many :feed_requirements
+  has_many :feedings
 
   validates :name, presence: true
   validates :animal_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

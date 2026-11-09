@@ -3,6 +3,7 @@ class Feed < ApplicationRecord
 
   has_many :feed_movements, dependent: :restrict_with_error
   has_many :feed_requirements
+  has_many :feedings
 
   validates :name, presence: true
   validates :stock_quantity, presence: true, numericality: { greater_than_or_equal_to: 0 }

@@ -19,6 +19,9 @@ en:
       terrain_occupied: "The terrain is occupied."
     feed_movements:
       insufficient_stock: "Insufficient stock for the requested quantity."
+  feed_movements:
+    reasons:
+      feeding: "Feeding group %{group_name}"
   activerecord:
     models:
       user:
@@ -39,6 +42,9 @@ en:
       feed_requirement:
         one: "Feed Requirement"
         other: "Feed Requirements"
+      feeding:
+        one: "Feeding"
+        other: "Feedings"
     attributes:
       user:
         name: "Name"
@@ -66,3 +72,8 @@ en:
         group: "Group"
         feed: "Feed"
         quantity_per_animal_kg: "Quantity per Animal (kg)"
+      feeding:
+        group: "Group"
+        feed: "Feed"
+        quantity: "Quantity"
+        occurred_at: "Feeding Date and Time"

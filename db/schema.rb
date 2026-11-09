@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_07_114719) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_07_221935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -38,6 +38,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_07_114719) do
     t.index ["feed_id"], name: "index_feed_requirements_on_feed_id"
     t.index ["group_id", "feed_id"], name: "index_feed_requirements_on_group_id_and_feed_id", unique: true
     t.index ["group_id"], name: "index_feed_requirements_on_group_id"
+  end
+
+  create_table "feedings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "group_id", null: false
+    t.uuid "feed_id", null: false
+    t.decimal "quantity", precision: 10, scale: 2, null: false
+    t.datetime "occurred_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feed_id"], name: "index_feedings_on_feed_id"
+    t.index ["group_id"], name: "index_feedings_on_group_id"
   end
 
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -114,6 +125,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_07_114719) do
   add_foreign_key "feed_movements", "feeds"
   add_foreign_key "feed_requirements", "feeds"
   add_foreign_key "feed_requirements", "groups"
+  add_foreign_key "feedings", "feeds"
+  add_foreign_key "feedings", "groups"
   add_foreign_key "feeds", "users"
   add_foreign_key "groups", "users"
   add_foreign_key "occupations", "groups"
