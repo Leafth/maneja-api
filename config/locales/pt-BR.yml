@@ -18,7 +18,7 @@ pt-BR:
       same_terrain: "O grupo já está neste terreno."
       terrain_occupied: "O terreno está ocupado."
     feed_movements:
-      insufficient_stock: "Estoque insuficiente para a quantidade solicitada."
+      insufficient_stock: "insuficiente para a quantidade solicitada."
   feed_movements:
     reasons:
       feeding: "Alimentação do grupo %{group_name}"
