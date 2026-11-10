@@ -94,7 +94,7 @@ RSpec.describe FeedPlanning::Calculate, type: :service do
           start_date: Date.today + 1,
           end_date: Date.today
         )
-      }.to raise_error(ArgumentError, I18n.t("errors.feed_planning.invalid_period"))
+      }.to raise_error(ApplicationError, I18n.t("errors.feed_planning.invalid_period"))
     end
 
     it "requires a group_id when scope is 'group'" do
@@ -108,7 +108,7 @@ RSpec.describe FeedPlanning::Calculate, type: :service do
           start_date: Date.today,
           end_date: Date.today + 4
         )
-      }.to raise_error(ArgumentError, I18n.t("errors.feed_planning.group_id_required"))
+      }.to raise_error(ApplicationError, I18n.t("errors.feed_planning.group_id_required"))
     end
 
     it "requires a valid scope" do
@@ -121,7 +121,7 @@ RSpec.describe FeedPlanning::Calculate, type: :service do
           start_date: Date.today,
           end_date: Date.today + 4
         )
-      }.to raise_error(ArgumentError, I18n.t("errors.feed_planning.invalid_scope"))
+      }.to raise_error(ApplicationError, I18n.t("errors.feed_planning.invalid_scope"))
     end
   end
 end

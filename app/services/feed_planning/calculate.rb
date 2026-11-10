@@ -26,19 +26,19 @@ module FeedPlanning
       def validate_period!(start_date:, end_date:)
         return if start_date <= end_date
 
-        raise ArgumentError, I18n.t("errors.feed_planning.invalid_period")
+        raise ApplicationError, I18n.t("errors.feed_planning.invalid_period")
       end
 
       def select_groups(user:, scope:, group_id:)
         case scope
         when "group"
-          raise ArgumentError, I18n.t("errors.feed_planning.group_id_required") if group_id.blank?
+          raise ApplicationError, I18n.t("errors.feed_planning.group_id_required") if group_id.blank?
 
           FeedPlanning::Strategies::SingleGroup.call(user:, group_id:)
         when "all"
           FeedPlanning::Strategies::AllGroups.call(user:)
         else
-          raise ArgumentError, I18n.t("errors.feed_planning.invalid_scope")
+          raise ApplicationError, I18n.t("errors.feed_planning.invalid_scope")
         end
       end
 
