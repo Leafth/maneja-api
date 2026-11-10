@@ -19,6 +19,10 @@ en:
       terrain_occupied: "The terrain is occupied."
     feed_movements:
       insufficient_stock: "Insufficient stock for the requested quantity."
+    feed_planning:
+      invalid_period: "The start date must be before the end date."
+      group_id_required: "The group must be provided."
+      invalid_scope: "The feed planning scope is invalid."
   feed_movements:
     reasons:
       feeding: "Feeding group %{group_name}"

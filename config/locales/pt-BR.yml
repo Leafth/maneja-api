@@ -19,6 +19,10 @@ pt-BR:
       terrain_occupied: "O terreno está ocupado."
     feed_movements:
       insufficient_stock: "insuficiente para a quantidade solicitada."
+    feed_planning:
+      invalid_period: "A data inicial deve ser anterior à data final."
+      group_id_required: "O grupo deve ser informado."
+      invalid_scope: "O escopo do planejamento de alimentação é inválido."
   feed_movements:
     reasons:
       feeding: "Alimentação do grupo %{group_name}"
