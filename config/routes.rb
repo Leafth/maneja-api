@@ -35,6 +35,8 @@ Rails.application.routes.draw do
         get "movements", to: "feed_movements#index"
       end
 
+      post "feed_planning", to: "feed_planning#create"
+
       get "health", to: "health#show"
     end
   end
