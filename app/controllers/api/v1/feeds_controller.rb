@@ -14,8 +14,11 @@ module Api
           filters: params.permit(:name, :min_stock_quantity, :max_stock_quantity).to_h,
           sort: params[:sort],
           direction: params[:direction],
-          page: params[:page], per_page: params[:per_page])
-        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedSerializer)
+          page: params[:page], per_page: params[:per_page]
+        )
+
+        snapshot = FeedConsumption::Snapshot.call(user: current_user)
+        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedSerializer, serializer_options: { include_consumption: true, consumption_snapshot: snapshot })
       end
 
       def show
