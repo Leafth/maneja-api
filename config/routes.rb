@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         post "movements/entry", to: "feed_movements#create_entry"
         post "movements/exit", to: "feed_movements#create_exit"
         get "movements", to: "feed_movements#index"
+        get "alerts", on: :collection
       end
 
       post "feed_planning", to: "feed_planning#create"

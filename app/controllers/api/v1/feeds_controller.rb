@@ -33,6 +33,11 @@ module Api
         head :no_content
       end
 
+      def alerts
+        alerts = FeedAlerts::List.call(user: current_user)
+        render json: { data: alerts }, status: :ok
+      end
+
       private
 
       def feed_params
