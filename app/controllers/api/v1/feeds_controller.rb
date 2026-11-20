@@ -23,7 +23,8 @@ module Api
 
       def show
         feed = Feeds::Find.call(user: current_user, id: params[:id])
-        render json: feed, serializer: FeedSerializer
+        snapshot = FeedConsumption::Snapshot.call(user: current_user)
+        render json: feed, serializer: FeedSerializer, include_consumption: true, consumption_snapshot: snapshot
       end
 
       def update
