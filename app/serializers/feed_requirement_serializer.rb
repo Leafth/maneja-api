@@ -9,6 +9,6 @@ class FeedRequirementSerializer < ActiveModel::Serializer
   def include_total_daily_kg? = instance_options[:include_total_daily_kg]
 
   def total_daily_kg
-    object.quantity_per_animal_kg * object.group.animal_count
+    object.daily_quantity
   end
 end
