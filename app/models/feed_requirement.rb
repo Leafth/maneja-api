@@ -4,4 +4,8 @@ class FeedRequirement < ApplicationRecord
 
   validates :quantity_per_animal_kg, presence: true, numericality: { greater_than: 0 }
   validates :feed_id, uniqueness: { scope: :group_id }
+
+  def daily_quantity
+    quantity_per_animal_kg * group.animal_count
+  end
 end

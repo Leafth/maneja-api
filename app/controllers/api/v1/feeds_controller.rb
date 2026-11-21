@@ -14,13 +14,17 @@ module Api
           filters: params.permit(:name, :min_stock_quantity, :max_stock_quantity).to_h,
           sort: params[:sort],
           direction: params[:direction],
-          page: params[:page], per_page: params[:per_page])
-        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedSerializer)
+          page: params[:page], per_page: params[:per_page]
+        )
+
+        snapshot = FeedConsumption::Snapshot.call(user: current_user)
+        render json: PaginatedCollectionSerializer.call(result:, serializer: FeedSerializer, serializer_options: { include_consumption: true, consumption_snapshot: snapshot })
       end
 
       def show
         feed = Feeds::Find.call(user: current_user, id: params[:id])
-        render json: feed, serializer: FeedSerializer
+        snapshot = FeedConsumption::Snapshot.call(user: current_user)
+        render json: feed, serializer: FeedSerializer, include_consumption: true, consumption_snapshot: snapshot
       end
 
       def update
@@ -31,6 +35,11 @@ module Api
       def destroy
         Feeds::Deactivate.call(user: current_user, id: params[:id])
         head :no_content
+      end
+
+      def alerts
+        alerts = FeedAlerts::List.call(user: current_user)
+        render json: { data: alerts }, status: :ok
       end
 
       private

@@ -10,6 +10,10 @@ module FeedPlanning
         groups = select_groups(user:, scope:, group_id:)
         days = (end_date - start_date).to_i + 1
 
+        snapshot = FeedConsumption::Snapshot.call(user:)
+
+        data = Calculator.call(groups:, snapshot:, days:, include_groups: scope == "all")
+
         {
           period: {
             start_date:,
@@ -17,7 +21,8 @@ module FeedPlanning
             days:
           },
           scope: build_scope(scope:, group_id:),
-          data: FeedPlanning::Calculator.call(groups:, days:)
+          status: build_status(data),
+          data:
         }
       end
 
@@ -46,6 +51,17 @@ module FeedPlanning
         return { type: "all" } if scope == "all"
 
         { type: "group", group_id: group_id }
+      end
+
+      def build_status(data)
+        shortage_count = data.count do |item|
+          item[:status][:state] == "shortage"
+        end
+
+        {
+          state: shortage_count.positive? ? "shortage" : "sufficient",
+          shortage_count:
+        }
       end
     end
   end

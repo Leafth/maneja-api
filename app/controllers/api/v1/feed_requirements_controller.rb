@@ -20,8 +20,16 @@ module Api
           group_id: params[:group_id]
         )
 
+        snapshot = FeedConsumption::Snapshot.call(user: current_user)
+
         data = feed_requirements.map do |feed_requirement|
-          FeedRequirementSerializer.new(feed_requirement, include_total_daily_kg: true).attributes
+          FeedRequirementSerializer.new(
+            feed_requirement,
+            include_feed_details: true,
+            include_total_daily_kg: true,
+            include_coverage: true,
+            consumption_snapshot: snapshot
+          ).attributes
         end
 
         render json: {

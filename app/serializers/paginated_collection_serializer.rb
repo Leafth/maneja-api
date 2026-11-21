@@ -1,10 +1,11 @@
 class PaginatedCollectionSerializer
   class << self
-    def call(result:, serializer:)
+    def call(result:, serializer:, serializer_options: {})
       {
         data: ActiveModelSerializers::SerializableResource.new(
           result.records,
-          each_serializer: serializer
+          each_serializer: serializer,
+          **serializer_options
         ).as_json,
         meta: {
           page: result.page,

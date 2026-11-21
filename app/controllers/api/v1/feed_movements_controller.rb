@@ -33,8 +33,9 @@ module Api
           page: params[:page], per_page: params[:per_page]
         )
 
+        snapshot = FeedConsumption::Snapshot.call(user: current_user)
         paginated = PaginatedCollectionSerializer.call(result:, serializer: FeedMovementSerializer)
-        render json: { feed: FeedSummarySerializer.new(feed).attributes, **paginated }
+        render json: { feed: FeedSummarySerializer.new(feed, include_consumption: true, consumption_snapshot: snapshot).attributes, **paginated }
       end
 
       private

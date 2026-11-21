@@ -7,7 +7,8 @@ RSpec.describe FeedPlanning::Calculator do
       group = create(:group, user:, animal_count: 10)
       feed = create(:feed, user:, stock_quantity: 100)
       create(:feed_requirement, group:, feed:, quantity_per_animal_kg: 2)
-      result = described_class.call(groups: [ group ], days: 5)
+      snapshot = FeedConsumption::Snapshot.call(user:)
+      result = described_class.call(groups: [ group ], snapshot:, days: 5)
 
       expect(result.size).to eq(1)
       expect(result).to eq([
@@ -16,8 +17,11 @@ RSpec.describe FeedPlanning::Calculator do
           feed_name: feed.name,
           stock_quantity: 100,
           required_quantity: 100,
-          missing_quantity: 0,
-          sufficient: true
+          global_required_quantity: 100,
+          status: {
+            state: "sufficient",
+            remaining_quantity: 0
+          }
         }
       ])
     end
@@ -29,7 +33,8 @@ RSpec.describe FeedPlanning::Calculator do
       feed = create(:feed, user:, stock_quantity: 500)
       create(:feed_requirement, group: group_one, feed:, quantity_per_animal_kg: 2)
       create(:feed_requirement, group: group_two, feed:, quantity_per_animal_kg: 3)
-      result = described_class.call(groups: [ group_one, group_two ], days: 5)
+      snapshot = FeedConsumption::Snapshot.call(user:)
+      result = described_class.call(groups: [ group_one, group_two ], snapshot:, days: 5)
 
       expect(result.size).to eq(1)
       expect(result).to eq([
@@ -38,8 +43,11 @@ RSpec.describe FeedPlanning::Calculator do
           feed_name: feed.name,
           stock_quantity: 500,
           required_quantity: 350,
-          missing_quantity: 0,
-          sufficient: true
+          global_required_quantity: 350,
+          status: {
+            state: "sufficient",
+            remaining_quantity: 150
+          }
         }
       ])
     end
@@ -51,27 +59,34 @@ RSpec.describe FeedPlanning::Calculator do
       feed_two = create(:feed, user:, stock_quantity: 50)
       create(:feed_requirement, group:, feed: feed_one, quantity_per_animal_kg: 2)
       create(:feed_requirement, group:, feed: feed_two, quantity_per_animal_kg: 3)
-      result = described_class.call(groups: [ group ], days: 5)
+      snapshot = FeedConsumption::Snapshot.call(user:)
+      result = described_class.call(groups: [ group ], snapshot:, days: 5)
 
       expect(result.size).to eq(2)
-      expect(result).to eq([
+      expect(result).to contain_exactly(
         {
           feed_id: feed_one.id,
           feed_name: feed_one.name,
           stock_quantity: 100,
           required_quantity: 100,
-          missing_quantity: 0,
-          sufficient: true
+          global_required_quantity: 100,
+          status: {
+            state: "sufficient",
+            remaining_quantity: 0
+          }
         },
         {
           feed_id: feed_two.id,
           feed_name: feed_two.name,
           stock_quantity: 50,
           required_quantity: 150,
-          missing_quantity: 100,
-          sufficient: false
+          global_required_quantity: 150,
+          status: {
+            state: "shortage",
+            missing_quantity: 100
+          }
         }
-      ])
+      )
     end
   end
 end
