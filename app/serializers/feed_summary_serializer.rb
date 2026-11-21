@@ -1,5 +1,5 @@
 class FeedSummarySerializer < ActiveModel::Serializer
-  include Concerns::FeedConsumptionAttributes
+  include FeedConsumptionAttributes
 
   attributes :id, :name, :stock_quantity
   attribute :daily_required_quantity, if: :include_consumption?
