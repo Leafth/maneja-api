@@ -32,6 +32,7 @@ RSpec.describe "POST /api/v1/feed_planning", type: :request do
       'days' => 5
     })
     expect(body['scope']).to eq({ 'type' => "group", 'group_id' => group.id })
+    expect(body['status']).to eq({ 'state' => "sufficient", 'shortage_count' => 0 })
     expect(body['data'].size).to eq(1)
     expect(body['data']).to eq([
       {
@@ -39,8 +40,11 @@ RSpec.describe "POST /api/v1/feed_planning", type: :request do
         'feed_name' => feed.name,
         'stock_quantity' => "100.0",
         'required_quantity' => "100.0",
-        'missing_quantity' => "0.0",
-        'sufficient' => true
+        'global_required_quantity' => "100.0",
+        'status' => {
+          'state' => "sufficient",
+          'remaining_quantity' => "0.0"
+        }
       }
     ])
   end
@@ -68,6 +72,7 @@ RSpec.describe "POST /api/v1/feed_planning", type: :request do
       'days' => 5
     })
     expect(body['scope']).to eq({ 'type' => "all" })
+    expect(body['status']).to eq({ 'state' => "shortage", 'shortage_count' => 1 })
     expect(body['data'].size).to eq(1)
     expect(body['data']).to eq([
       {
@@ -75,8 +80,23 @@ RSpec.describe "POST /api/v1/feed_planning", type: :request do
         'feed_name' => feed.name,
         'stock_quantity' => "100.0",
         'required_quantity' => "400.0",
-        'missing_quantity' => "300.0",
-        'sufficient' => false
+        'global_required_quantity' => "400.0",
+        'status' => {
+          'state' => "shortage",
+          'missing_quantity' => "300.0"
+        },
+        'groups' => [
+          {
+            'group_id' => group_one.id,
+            'group_name' => group_one.name,
+            'daily_required_quantity' => "20.0"
+          },
+          {
+            'group_id' => group_two.id,
+            'group_name' => group_two.name,
+            'daily_required_quantity' => "60.0"
+          }
+        ]
       }
     ])
   end
