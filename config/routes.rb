@@ -38,6 +38,8 @@ Rails.application.routes.draw do
 
       post "feed_planning", to: "feed_planning#create"
 
+      get "overview", to: "overview#show"
+
       get "health", to: "health#show"
     end
   end
