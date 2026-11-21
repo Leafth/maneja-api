@@ -84,7 +84,14 @@ RSpec.describe FeedPlanning::Calculator do
           status: {
             state: "shortage",
             missing_quantity: 100
-          }
+          },
+          groups: [
+            {
+              group_id: group_two.id,
+              group_name: group_two.name,
+              daily_required_quantity: 60
+            }
+          ]
         }
       ])
     end

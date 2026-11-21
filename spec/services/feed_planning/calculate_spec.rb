@@ -23,16 +23,18 @@ RSpec.describe FeedPlanning::Calculate, type: :service do
       })
 
       expect(result[:scope]).to eq({ type: "group", group_id: group.id })
-
-      expect(result[:data].size).to eq(1)
+      expect(result[:status]).to eq({ state: "sufficient", shortage_count: 0 })
       expect(result[:data]).to eq([
         {
           feed_id: feed.id,
           feed_name: feed.name,
           stock_quantity: 100,
           required_quantity: 100,
-          missing_quantity: 0,
-          sufficient: true
+          global_required_quantity: 100,
+          status: {
+            state: "sufficient",
+            remaining_quantity: 0
+          }
         }
       ])
     end
@@ -60,6 +62,7 @@ RSpec.describe FeedPlanning::Calculate, type: :service do
       })
 
       expect(result[:scope]).to eq({ type: "all" })
+      expect(result[:status]).to eq({ state: "shortage", shortage_count: 1 })
 
       expect(result[:data].size).to eq(2)
       expect(result[:data]).to include(
@@ -68,16 +71,36 @@ RSpec.describe FeedPlanning::Calculate, type: :service do
           feed_name: feed_one.name,
           stock_quantity: 100,
           required_quantity: 100,
-          missing_quantity: 0,
-          sufficient: true
+          global_required_quantity: 100,
+          status: {
+            state: "sufficient",
+            remaining_quantity: 0
+          },
+          groups: [
+            {
+              group_id: group_one.id,
+              group_name: group_one.name,
+              daily_required_quantity: 20
+            }
+          ]
         },
         {
           feed_id: feed_two.id,
           feed_name: feed_two.name,
           stock_quantity: 200,
           required_quantity: 300,
-          missing_quantity: 100,
-          sufficient: false
+          global_required_quantity: 300,
+          status: {
+            state: "shortage",
+            missing_quantity: 100
+          },
+          groups: [
+            {
+              group_id: group_two.id,
+              group_name: group_two.name,
+              daily_required_quantity: 60
+            }
+          ]
         }
       )
     end
