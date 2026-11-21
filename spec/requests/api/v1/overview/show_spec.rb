@@ -62,6 +62,30 @@ RSpec.describe "GET /api/v1/overview", type: :request do
     })
   end
 
+  it "return the most relevant feed alerts" do
+    group = create(:group, user:, animal_count: 10)
+    critical_feed = create(:feed, user:, stock_quantity: 20)
+    urgency_feed = create(:feed, user:, stock_quantity: 100)
+    attention_feed = create(:feed, user:, stock_quantity: 200)
+    info_feed = create(:feed, user:, stock_quantity: 500)
+
+    create(:feed_requirement, group:, feed: critical_feed, quantity_per_animal_kg: 1)
+    create(:feed_requirement, group:, feed: urgency_feed, quantity_per_animal_kg: 1)
+    create(:feed_requirement, group:, feed: attention_feed, quantity_per_animal_kg: 1)
+    create(:feed_requirement, group:, feed: info_feed, quantity_per_animal_kg: 1)
+
+    get "/api/v1/overview", headers: headers
+
+    body = response.parsed_body
+    expect(response).to have_http_status(:ok)
+
+    expect(body["feed_alerts"].pluck("feed_id")).to eq([
+      critical_feed.id,
+      urgency_feed.id,
+      attention_feed.id
+    ])
+  end
+
   it "returns unauthorized if no token is provided" do
     get "/api/v1/overview"
 

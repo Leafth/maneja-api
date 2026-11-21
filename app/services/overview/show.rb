@@ -4,7 +4,8 @@ module Overview
       def call(user:)
         {
           herd: herd_summary(user),
-          terrains: terrains_summary(user)
+          terrains: terrains_summary(user),
+          feed_alerts: feed_alerts(user)
         }
       end
 
@@ -28,6 +29,10 @@ module Overview
           occupied: terrains.occupied.count,
           resting: terrains.resting.count
         }
+      end
+
+      def feed_alerts(user)
+        FeedAlerts::List.call(user:).first(3)
       end
     end
   end
