@@ -42,6 +42,26 @@ RSpec.describe "GET /api/v1/overview", type: :request do
     })
   end
 
+  it "returns the terrains overview" do
+    create(:terrain, :available, user:,)
+    create(:terrain, :occupied, user:,)
+    create(:terrain, :resting, user:,)
+    create(:terrain, :deleted, user:,)
+    create(:terrain, :occupied, user:,)
+
+    get "/api/v1/overview", headers: headers
+
+    body = response.parsed_body
+    expect(response).to have_http_status(:ok)
+
+    expect(body["terrains"]).to eq({
+      "total" => 4,
+      "available" => 1,
+      "occupied" => 2,
+      "resting" => 1
+    })
+  end
+
   it "returns unauthorized if no token is provided" do
     get "/api/v1/overview"
 

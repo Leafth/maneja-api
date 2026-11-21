@@ -6,6 +6,10 @@ FactoryBot.define do
     status { :available }
     deleted_at { nil }
 
+    trait :available do
+      status { :available }
+    end
+
     trait :occupied do
       status { :occupied }
     end
