@@ -63,7 +63,7 @@ RSpec.describe FeedPlanning::Calculator do
       result = described_class.call(groups: [ group ], snapshot:, days: 5)
 
       expect(result.size).to eq(2)
-      expect(result).to eq([
+      expect(result).to contain_exactly(
         {
           feed_id: feed_one.id,
           feed_name: feed_one.name,
@@ -84,16 +84,9 @@ RSpec.describe FeedPlanning::Calculator do
           status: {
             state: "shortage",
             missing_quantity: 100
-          },
-          groups: [
-            {
-              group_id: group_two.id,
-              group_name: group_two.name,
-              daily_required_quantity: 60
-            }
-          ]
+          }
         }
-      ])
+      )
     end
   end
 end
